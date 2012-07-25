@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PSDGuides.js</title>
+  <meta name="author" content="Noel Delgado">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../css/reset.css" type="text/css"> 
+  <link rel="stylesheet" href="../css/psdguides.css" type="text/css"> 
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  
+  <style>
+    body {
+      background: #000 url('images/breezi_com-sample.jpg') 50% 0 no-repeat;
+      width: 100%; min-height: 10948px;
+    }
+  </style>
+</head>
+<body>
+  
+  <script src="../PSDGuides.min.js"></script>
+  
+  <script>
+    window.onload = function () {
+      var breezi = new PSDGuides(document.body, {
+        siteWidth : 1400,
+        vGuides   : [40, 171, 54, 30, 54, 30, 54, 30, 54, 30, 54, 30, 54, 15, 15, 54, 30, 54, 30, 54, 30, 54, 30, 54],
+        hGuides   : [
+          40, 72,
+          50, 190, 185, 185, 90, 50, 40,
+          178, 214, 16,
+          100, 100, 200, 200,
+          100, 168, 166, 100,
+          226, 226,
+          100, 211, 211, 100,
+          211, 211, 100,
+          671, 150,
+          615, 150,
+          105, 104, 100,
+          288, 100, //Fonts
+          204, 204, 100, // Forms
+          207, 205, 100, // Apps
+          155, 155, 100, // Pages
+          190, 190, 100, // SEO
+          211, 211, 100, // Chat
+          145, 145, 150, //Embed
+          204, 254, // Tracking
+          150, 457, // More
+          602, 47
+        ]
+      });
+    };
+  </script>
+</body>
+</html>
