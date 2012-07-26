@@ -1,9 +1,8 @@
-### PSDGuides.js
+## PSDGuides.js
 
 Simple script to draw photoshop-like guides.
-No JavaScript library dependencies.
 
-#### Usage
+### Usage
 
 ```js
 var psd = new PSDGuides(document.body, {
@@ -12,7 +11,7 @@ var psd = new PSDGuides(document.body, {
     hGuides   : [50, 100, 100, 250, 250, 50, 50, 50] // Horizontal Guides
 });
 ```
-#### Defaults Options
+### Defaults Options
 
 ```js
 show: true, // (true, false)
@@ -23,4 +22,32 @@ orientation: 'center', //("center", "left", "right")
 hGuides: {},
 vGuides: {},
 zindex: 9999
+```
+
+#### 960 Grid System
+
+Applying a 960 grid system is easy as...
+
+##### 12-Colums grid
+
+```js
+window.onload = function () {
+    // 960 Grid System - 12 Columns
+    var psdguides = new PSDGuides(document.body, {
+        siteWidth : 960,
+        vGuides   : [10, 60, 10]
+    });
+};
+```
+
+##### 16-Colums grid
+
+```js
+window.onload = function () {
+    // 960 Grid System - 12 Columns
+    var psdguides = new PSDGuides(document.body, {
+        siteWidth : 960,
+        vGuides   : [10, 40, 10]
+    });
+};
 ```
