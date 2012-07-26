@@ -28,11 +28,10 @@ zindex: 9999
 
 Applying a 960 grid system is easy as...
 
-##### 12-Colums grid
+##### 12-column grid
 
 ```js
 window.onload = function () {
-    // 960 Grid System - 12 Columns
     var psdguides = new PSDGuides(document.body, {
         siteWidth : 960,
         vGuides   : [10, 60, 10]
@@ -40,11 +39,10 @@ window.onload = function () {
 };
 ```
 
-##### 16-Colums grid
+##### 16-column grid
 
 ```js
 window.onload = function () {
-    // 960 Grid System - 12 Columns
     var psdguides = new PSDGuides(document.body, {
         siteWidth : 960,
         vGuides   : [10, 40, 10]
