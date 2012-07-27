@@ -9,27 +9,27 @@
         PSDWrapper = null,
         HContainer = null,
         VContainer = null,
-        _element = {},
-        _options = {};
+        Element = {},
+        Options = {};
     
     function PSDGuides( elem, options ) {
-        if ( !elem ) {
+        if (!elem) {
             console.error("element " + elem);
             return;
         }
         
         this.options = {};
         
-        for ( var prop in PSDGuides.defaults ) {
+        for (var prop in PSDGuides.defaults) {
             this.options[prop] = PSDGuides.defaults[prop];
         }
         
-        for ( prop in options ) {
+        for (prop in options) {
             this.options[prop] = options[prop];
         }
         
-        _element = elem;
-        _options = this.options;
+        Element = elem;
+        Options = this.options;
         this.init();
     }
     
@@ -47,7 +47,7 @@
     PSDGuides.prototype = {
             
         init : function () {
-            if (this.checkVariables() && _options.show) {
+            if ( this.checkVariables() && Options.show ) {
                 this.bindEvents();
                 this.drawWrapper();
             }
@@ -55,7 +55,7 @@
         
         bindEvents : function () {
             window.addEventListener('resize', function () {
-                !PSDGuides.prototype.isObjEmpty(_options.vGuides) ? PSDGuides.prototype.drawWrapper() : null;
+                !PSDGuides.prototype.isObjEmpty(Options.vGuides) ? PSDGuides.prototype.drawWrapper() : null;
             }, false);
         },
         
@@ -65,44 +65,35 @@
         
         
         checkVariables : function () {
-          return !this.isObjEmpty(_options.hGuides) || !this.isObjEmpty(_options.vGuides) || _options.siteWidth !== 0;
+          return !this.isObjEmpty(Options.hGuides) || !this.isObjEmpty(Options.vGuides) || Options.siteWidth !== 0;
         },
         
         drawWrapper : function () {
             this.clearAll();
             PSDWrapper = document.createElement('div');
-            PSDWrapper.style.position = 'absolute';
-            PSDWrapper.style.top = 0;
-            PSDWrapper.style.width = '100%';
-            PSDWrapper.style.height = getDocumentHeight() + 'px';
-            PSDWrapper.style.zIndex = _options.zindex;
-            PSDWrapper.style.backgroundColor = _options.backColor;
+            PSDWrapper.style.cssText = 'position: absolute; top: 0; width: 100%; height: ' + getDocumentHeight() + 'px; z-index: ' + Options.zindex + '; background-color: ' + Options.backColor;
             PSDWrapper.setAttribute('id', 'psGuidesWrapper');
             body.appendChild(PSDWrapper);
             
-            !this.isObjEmpty(_options.hGuides) ? this.drawHorizontalLines() : null;
-            !this.isObjEmpty(_options.vGuides) ? this.drawVerticalLines() : null;
+            !this.isObjEmpty(Options.hGuides) ? this.drawHorizontalLines() : null;
+            !this.isObjEmpty(Options.vGuides) ? this.drawVerticalLines() : null;
         },
         
         drawHorizontalLines : function () {
-            var totalLines = _options.hGuides.length,
+            var totalLines = Options.hGuides.length,
                 newDocHeight = 0;
             
             HContainer = document.createElement('div');
-            HContainer.style.position = 'absolute';
-            HContainer.style.top = 0;
-            HContainer.style.zIndex = _options.zindex;
-            HContainer.style.height = '100%';
-            HContainer.style.width = '100%';
+            HContainer.style.cssText = 'position: absolute; top: 0; height: 100%; width: 100%;';
             HContainer.setAttribute('id', 'psGuidesHorizontals');
             PSDWrapper.appendChild(HContainer);
             
             for (var y = 0; y < totalLines; y += 1) {
                 var e = document.createElement('div');
-                e.style.height = _options.hGuides[y] + 'px';
-                e.style.boxShadow = 'inset 0 -1px 0 ' + _options.lineColor;
+                e.style.height = Options.hGuides[y] + 'px';
+                e.style.boxShadow = 'inset 0 -1px 0 ' + Options.lineColor;
                 HContainer.appendChild(e);
-                newDocHeight += parseInt(_options.hGuides[y]);
+                newDocHeight += parseInt(Options.hGuides[y]);
             }
             
             newDocHeight = Math.max(body.clientHeight, newDocHeight);
@@ -110,46 +101,42 @@
         },
         
         drawVerticalLines : function (wrapper, canvas) {
-            var siteWidth = _options.siteWidth > 0 ? _options.siteWidth : body.clientWidth,
-                alignTo;
+            var siteWidth = Options.siteWidth > 0 ? Options.siteWidth : body.clientWidth,
+                alignTo = 0;
             
-            switch ( _options.orientation ) {
+            switch (Options.orientation) {
                 case 'center' :
-                    alignTo = (body.clientWidth - siteWidth) / 2;
+                    alignTo = Math.round((body.clientWidth - siteWidth) / 2);
                     break;
                 case 'left' :
                     alignTo = 0;
                     break;
                 case 'right' :
-                    alignTo = body.clientWidth - siteWidth;
+                    alignTo = Math.round(body.clientWidth - siteWidth);
                     break;
+                default:
+                    alignTo = Math.round((body.clientWidth - siteWidth) / 2);
             };
             
             VContainer = document.createElement('div');
-            VContainer.style.position = 'fixed';
-            VContainer.style.top = 0;
-            VContainer.style.zIndex = _options.zindex;
-            VContainer.style.height = '100%';
-            VContainer.style.width = siteWidth + 'px';
-            VContainer.style.marginLeft = alignTo + 'px';
-            VContainer.style.boxShadow = 'inset 1px 0 0 ' + _options.lineColor + ', 1px 0 0 ' + _options.lineColor;
+            VContainer.style.cssText = 'position: fixed; top: 0; height: 100%; width: ' + siteWidth + 'px; margin-left: ' + alignTo + 'px';
+            VContainer.style.boxShadow = 'inset 1px 0 0 ' + Options.lineColor + ', 1px 0 0 ' + Options.lineColor;
             VContainer.setAttribute('id', 'psGuidesVerticals');
             PSDWrapper.appendChild(VContainer);
             
-            if ( !this.isObjEmpty(_options.vGuides) ) {
+            if (!this.isObjEmpty(Options.vGuides)) {
                 var availableWidth = 0,
-                    totalLines = _options.vGuides.length;
+                    totalLines = Options.vGuides.length;
                 
-                while ( availableWidth < siteWidth ) {
+                while (availableWidth < siteWidth) {
                     for (var y = 0; y < totalLines; y += 1) {
                         var e = document.createElement('div');
-                        e.style.position = 'absolute';
-                        e.style.width = availableWidth + parseInt(_options.vGuides[y]) + 'px';
-                        e.style.height = '100%';
-                        e.style.boxShadow = 'inset -1px 0 0 ' + _options.lineColor;
+                        e.style.cssText = 'position: absolute; height: 100%; width: ' + availableWidth + parseInt(Options.vGuides[y]) + 'px';
+                        e.style.boxShadow = 'inset -1px 0 0 ' + Options.lineColor;
                         
-                        availableWidth += parseInt(_options.vGuides[y]);
-                        if ( availableWidth < siteWidth ) {
+                        availableWidth += parseInt(Options.vGuides[y]);
+                        
+                        if (availableWidth < siteWidth) {
                             VContainer.appendChild(e);
                         } else {
                             return false;
