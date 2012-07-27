@@ -131,9 +131,8 @@
                 while (availableWidth < siteWidth) {
                     for (var y = 0; y < totalLines; y += 1) {
                         var e = document.createElement('div');
-                        e.style.cssText = 'position: absolute; height: 100%; width: ' + availableWidth + parseInt(Options.vGuides[y]) + 'px';
+                        e.style.cssText = 'position: absolute; height: 100%; width: ' + (availableWidth + parseInt(Options.vGuides[y])) + 'px;';
                         e.style.boxShadow = 'inset -1px 0 0 ' + Options.lineColor;
-                        
                         availableWidth += parseInt(Options.vGuides[y]);
                         
                         if (availableWidth < siteWidth) {
