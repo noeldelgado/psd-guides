@@ -1,51 +1,50 @@
 ## PSDGuides.js
 
-Simple script to draw photoshop-like guides.
+PSDGuides.js is a simple script to draw photoshop-like guides.
+
+Can be usefull during slicing phase to accomplish pixel-perfect web layouts.
 
 ### Usage
 
 ```js
-var psd = new PSDGuides(document.body, {
-    siteWidth : 1000,
-    vGuides   : [20, 355, 355, 250, 20], // Vertical Guides
-    hGuides   : [50, 100, 100, 250, 250, 50, 50, 50] // Horizontal Guides
+PSDGuides({
+    canvasWidth : 1000,
+    xGuides     : [20, 355, 355, 250, 20],
+    yGuides     : [50, 100, 100, 250, 250, 50, 50, 50]
 });
 ```
-### Defaults Options
+### Defaults
 
 ```js
-show: true, // (true, false)
-backColor: 'rgba(132, 170, 234, .25)',
-lineColor: 'rgba(73, 141, 255, 1)',
-siteWidth: 0,
-orientation: 'center', //("center", "left", "right")
-hGuides: {},
-vGuides: {},
-zindex: 9999
+show        : true, // Boolean : (true, false)
+canvas      : document.getElementsByTagName("body")[0],
+canvasWidth : 0, // Integer
+orientation : "center", // String : ("center", "left", "right")
+backColor   : "rgba(132, 170, 234, .25)", // Valid Color
+lineColor   : "rgba(73, 141, 255, 1)", // Valid Color
+xGuides     : {},
+yGuides     : {},
+zindex      : 9999
 ```
 
 #### 960 Grid System
 
-Applying a 960 grid system is easy as...
+Applying 960 grid system
 
 ##### 12-column grid
 
 ```js
-window.onload = function () {
-    var psdguides = new PSDGuides(document.body, {
-        siteWidth : 960,
-        vGuides   : [10, 60, 10]
-    });
-};
+PSDGuides({
+    canvasWidth : 960,
+    xGuides     : [10, 60, 10]
+});
 ```
 
 ##### 16-column grid
 
 ```js
-window.onload = function () {
-    var psdguides = new PSDGuides(document.body, {
-        siteWidth : 960,
-        vGuides   : [10, 40, 10]
-    });
-};
+PSDGuides({
+    canvasWidth : 960,
+    xGuides     : [10, 40, 10]
+});
 ```

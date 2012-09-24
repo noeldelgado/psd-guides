@@ -1,163 +1,253 @@
-(function( window, undefined ) {
-    
-    'use strict';
-    
+(function (window, undefined) {
+
+    "use strict";
+
     window.PSDGuides = PSDGuides;
-    
-    var document = window.document,
-        body = document.getElementsByTagName('body')[0],
-        PSDWrapper = null,
-        HContainer = null,
-        VContainer = null,
-        Element = {},
-        Options = {};
-    
-    function PSDGuides( elem, options ) {
-        if (!elem) {
-            console.error("element " + elem);
-            return;
-        }
-        
-        this.options = {};
-        
-        for (var prop in PSDGuides.defaults) {
-            this.options[prop] = PSDGuides.defaults[prop];
-        }
-        
-        for (prop in options) {
-            this.options[prop] = options[prop];
-        }
-        
-        Element = elem;
-        Options = this.options;
-        this.init();
+
+    var doc     = window.document,
+        body    = document.getElementsByTagName("body")[0],
+        UI      = {},
+        f       = {},
+        settings = {
+            show        : true,
+            canvas      : body,
+            canvasWidth : 0,
+            orientation : "center",
+            backColor   : "rgba(132, 170, 234, 0.25)",
+            lineColor   : "rgba(73, 141, 255, 1)",
+            xGuides     : {},
+            yGuides     : {},
+            zindex      : 9999
+        };
+
+    function PSDGuides (options) {
+        f.extend(options);
+        PSDGuides.prototype.init();
     }
-    
-    PSDGuides.defaults = {
-        show : true,
-        backColor : 'rgba(132, 170, 234, .25)',
-        lineColor : 'rgba(73, 141, 255, 1)',
-        siteWidth : 0,
-        orientation : 'center',
-        hGuides : {},
-        vGuides : {},
-        zindex : 9999
-    };
-    
+
     PSDGuides.prototype = {
-            
         init : function () {
-            if ( this.checkVariables() && Options.show ) {
-                this.bindEvents();
-                this.drawWrapper();
-            }
+            this.UI();
+            this.bindEvents();
+            this.draw();
         },
-        
+
         bindEvents : function () {
-            window.addEventListener('resize', function () {
-                !PSDGuides.prototype.isObjEmpty(Options.vGuides) ? PSDGuides.prototype.drawWrapper() : null;
-            }, false);
+            f.addEvent( window, "resize", function () {
+                if ( settings.show ) {
+                    PSDGuides.prototype.draw();
+                }
+            });
+            f.addEvent( UI.toggler, "click", function (e) {
+                if ( UI.wrapper.style.display != "none" ) {
+                    UI.wrapper.style.display = "none";
+                    settings.show = false;
+                    UI.toggler.innerHTML = UI.toggler.textOff;
+                } else {
+                    UI.wrapper.style.display = "";
+                    settings.show = true;
+                    UI.toggler.innerHTML = UI.toggler.textOn;
+                    PSDGuides.prototype.draw();
+                }
+                return false;
+            });
         },
-        
-        isObjEmpty : function (obj) {
-            return Object.getOwnPropertyNames(obj).length === 0 ? true : false
+
+        UI : function () {
+            UI.toggler = document.createElement("a");
+            UI.toggler.textOn   = "Hide PSDGuides.js";
+            UI.toggler.textOff  = "Show PSDGuides.js";
+            var style = UI.toggler.style;
+            style.position          = "fixed";
+            style.right             = "10px";
+            style.top               = "10px";
+            style.padding           = "5px 10px";
+            style.border            = "1px solid #000";
+            style.backgroundColor   = "rgba(0, 0, 0, 0.7)";
+            style.borderRadius      = "3px";
+            style.color             = "#f0f0f0";
+            style.fontFamily        = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+            style.fontSize          = "11px";
+            style.fontWeight        = "bold";
+            style.zIndex            = settings.zindex + 1;
+            style.cursor            = "pointer";
+            UI.toggler.innerHTML    = settings.show ? UI.toggler.textOn : UI.toggler.textOff;
+            UI.toggler.setAttribute("id", "psdguide-ui");
+            body.appendChild( UI.toggler );
         },
-        
-        
-        checkVariables : function () {
-          return !this.isObjEmpty(Options.hGuides) || !this.isObjEmpty(Options.vGuides) || Options.siteWidth !== 0;
-        },
-        
-        drawWrapper : function () {
-            this.clearAll();
-            PSDWrapper = document.createElement('div');
-            PSDWrapper.style.cssText = 'position: absolute; top: 0; width: 100%; height: ' + getDocumentHeight() + 'px; z-index: ' + Options.zindex + '; background-color: ' + Options.backColor;
-            PSDWrapper.setAttribute('id', 'psGuidesWrapper');
-            body.appendChild(PSDWrapper);
-            
-            !this.isObjEmpty(Options.hGuides) ? this.drawHorizontalLines() : null;
-            !this.isObjEmpty(Options.vGuides) ? this.drawVerticalLines() : null;
-        },
-        
-        drawHorizontalLines : function () {
-            var totalLines = Options.hGuides.length,
-                newDocHeight = 0;
-            
-            HContainer = document.createElement('div');
-            HContainer.style.cssText = 'position: absolute; top: 0; height: 100%; width: 100%;';
-            HContainer.setAttribute('id', 'psGuidesHorizontals');
-            PSDWrapper.appendChild(HContainer);
-            
-            for (var y = 0; y < totalLines; y += 1) {
-                var e = document.createElement('div');
-                e.style.height = Options.hGuides[y] + 'px';
-                e.style.boxShadow = 'inset 0 -1px 0 ' + Options.lineColor;
-                HContainer.appendChild(e);
-                newDocHeight += parseInt(Options.hGuides[y]);
+
+        draw : function () {
+            var style;
+            this.clear();
+            UI.wrapper              = document.createElement("div");
+            style                   = UI.wrapper.style;
+            style.position          = "absolute";
+            style.top               = 0;
+            style.width             = "100%";
+            style.height            = f.getHeight() + "px";
+            style.zIndex            = settings.zindex;
+            style.backgroundColor   = settings.backColor;
+            UI.wrapper.setAttribute("id", "psGuidesWrapper");
+            body.appendChild( UI.wrapper );
+
+            if ( !settings.show ) {
+                style.display = "none";
             }
-            
-            newDocHeight = Math.max(body.clientHeight, newDocHeight);
-            PSDWrapper.style.height = newDocHeight;
+
+            if ( !f.isObjEmpty( settings.yGuides ) ) {
+                this.drawYLines();
+            }
+
+            if ( !f.isObjEmpty( settings.xGuides ) ) {
+                this.drawXLines();
+            }
         },
-        
-        drawVerticalLines : function (wrapper, canvas) {
-            var siteWidth = Options.siteWidth > 0 ? Options.siteWidth : body.clientWidth,
-                alignTo = 0;
-            
-            switch (Options.orientation) {
-                case 'center' :
-                    alignTo = Math.round((body.clientWidth - siteWidth) / 2);
-                    break;
-                case 'left' :
-                    alignTo = 0;
-                    break;
-                case 'right' :
-                    alignTo = Math.round(body.clientWidth - siteWidth);
-                    break;
-                default:
-                    alignTo = Math.round((body.clientWidth - siteWidth) / 2);
-            };
-            
-            VContainer = document.createElement('div');
-            VContainer.style.cssText = 'position: fixed; top: 0; height: 100%; width: ' + siteWidth + 'px; margin-left: ' + alignTo + 'px';
-            VContainer.style.boxShadow = 'inset 1px 0 0 ' + Options.lineColor + ', 1px 0 0 ' + Options.lineColor;
-            VContainer.setAttribute('id', 'psGuidesVerticals');
-            PSDWrapper.appendChild(VContainer);
-            
-            if (!this.isObjEmpty(Options.vGuides)) {
-                var availableWidth = 0,
-                    totalLines = Options.vGuides.length;
-                
+
+        drawYLines : function () {
+            var newDocHeight    = 0,
+                style           = null;
+
+            UI.yContainer   = document.createElement("div");
+            style           = UI.yContainer.style;
+            style.position  = "absolute";
+            style.top       = 0;
+            style.height    = "100%";
+            style.width     = "100%";
+            UI.wrapper.appendChild( UI.yContainer );
+
+            settings.yGuides.map(function ( v, y ) {
+                var e                   = document.createElement('div');
+                e.style.height          = (settings.yGuides[y] - 1) + "px";
+                e.style.borderBottom    = "1px solid " + settings.lineColor;
+                UI.yContainer.appendChild( e );
+                newDocHeight += parseInt( settings.yGuides[y], 10 );
+            });
+
+            newDocHeight            = Math.max( body.clientHeight, newDocHeight );
+            UI.wrapper.style.height = newDocHeight;
+        },
+
+        drawXLines : function () {
+            var siteWidth       = settings.canvasWidth > 0 ? settings.canvasWidth : f.getWidth(),
+                availableWidth  = 0,
+                alignTo         = f.getOrientation( siteWidth ),
+                style           = null,
+                e;
+
+            UI.xContainer       = document.createElement("div");
+            style               = UI.xContainer.style;
+            style.position      = "fixed";
+            style.top           = 0;
+            style.height        = "100%";
+            style.width         = (siteWidth - 2) + "px";
+            style.marginLeft    = alignTo + "px";
+            style.borderLeft    = "1px solid " + settings.lineColor;
+            style.borderRight   = "1px solid " + settings.lineColor;
+            UI.wrapper.appendChild( UI.xContainer );
+
+            if (!f.isObjEmpty(settings.xGuides)) {
                 while (availableWidth < siteWidth) {
-                    for (var y = 0; y < totalLines; y += 1) {
-                        var e = document.createElement('div');
-                        e.style.cssText = 'position: absolute; height: 100%; width: ' + (availableWidth + parseInt(Options.vGuides[y])) + 'px;';
-                        e.style.boxShadow = 'inset -1px 0 0 ' + Options.lineColor;
-                        availableWidth += parseInt(Options.vGuides[y]);
-                        
-                        if (availableWidth < siteWidth) {
-                            VContainer.appendChild(e);
+                    settings.xGuides.map(function (v, i) {
+                        var x = settings.xGuides[i],
+                            m;
+                        if ( typeof x === "string" ) {
+                            if ( x.indexOf("*") !== -1 ) {
+                                var j = 0;
+                                x = x.replace(/[()\s]/g, "").split(/[,*]/g);
+                                m = x[x.length - 1];
+                                for ( ; j < m; j += 1 ) {
+                                    x.map(function (v, index) {
+                                        if ( index === (x.length - 1) ) {
+                                            return;
+                                        }
+                                        e = document.createElement('div');
+                                        e.style.position    = "absolute";
+                                        e.style.left        = availableWidth + "px";
+                                        e.style.height      = "100%";
+                                        e.style.width       = parseInt( x[index], 10 ) - 1 + "px";
+                                        e.style.borderRight = "1px solid " + settings.lineColor;
+                                        availableWidth += parseInt( x[index], 10 );
+                                        (availableWidth < siteWidth) ? UI.xContainer.appendChild( e ) : null;
+                                    });
+                                };
+                            }
                         } else {
-                            return false;
+                            e = document.createElement('div');
+                            e.style.position    = "absolute";
+                            e.style.left        = availableWidth + "px";
+                            e.style.height      = "100%";
+                            e.style.width       = parseInt(settings.xGuides[i], 10) - 1 + "px";
+                            e.style.borderRight = "1px solid " + settings.lineColor;
+                            availableWidth += parseInt(settings.xGuides[i], 10);
+                            (availableWidth < siteWidth) ? UI.xContainer.appendChild(e) : null;
                         }
-                    }
+                    });
                 }
             }
         },
-        
-        clearAll : function () {
-           var e = document.getElementById('psGuidesWrapper');
-           e !== null ? body.removeChild(e) : null;
+
+        clear : function () {
+            var e = document.getElementById('psGuidesWrapper');
+            if ( e !== null ) {
+                body.removeChild( e );
+            }
         }
-        
     };
-    
-    function getDocumentHeight() {
-        return Math.max(
-            Math.max(body.scrollHeight, document.documentElement.scrollHeight),
-            Math.max(body.offsetHeight, document.documentElement.offsetHeight),
-            Math.max(body.clientHeight, document.documentElement.clientHeight)
-        );
+
+    f.extend = function ( options ) {
+        var i;
+        for (i in options) {
+            if ( options.hasOwnProperty(i) ) {
+                settings[i] = options[i];
+            }
+        }
+    };
+
+    f.addEvent = function ( obj, type, fn ) {
+        if ( obj.addEventListener ) {
+            obj.addEventListener( type, fn, false );
+        } else if ( obj.attachEvent ) {
+            obj[ 'e' + type + fn ] = fn;
+            obj[ type + fn ] = function() {
+                obj[ 'e' + type + fn ]( window.event );
+            };
+            obj.attachEvent( "on" + type, obj[ type + fn ] );
+        }
     }
 
+    f.getHeight = function () {
+        return  Math.max(
+            Math.max( body.scrollHeight, doc.documentElement.scrollHeight ),
+            Math.max( body.offsetHeight, doc.documentElement.offsetHeight ),
+            Math.max( body.clientHeight, doc.documentElement.clientHeight )
+        );
+    };
+
+    f.getWidth = function () {
+         return  Math.max(
+            Math.max( body.scrollWidth, doc.documentElement.scrollWidth ),
+            Math.max( body.offsetWidth, doc.documentElement.offsetWidth ),
+            Math.max( body.clientWidth, doc.documentElement.clientWidth )
+        );
+    };
+
+    f.isObjEmpty = function ( obj ) {
+        return Object.getOwnPropertyNames( obj ).length === 0 ? true : false
+    };
+
+    f.getOrientation = function ( siteWidth ) {
+        switch ( settings.orientation ) {
+            case "center":
+                return Math.floor( (f.getWidth() - siteWidth) / 2 );
+                break;
+            case "left":
+                return 0;
+                break;
+            case "right":
+                return Math.floor( f.getWidth() - siteWidth );
+                break;
+            default:
+                return Math.floor( (f.getWidth() - siteWidth) / 2 );
+        };
+    };
 })(window);
