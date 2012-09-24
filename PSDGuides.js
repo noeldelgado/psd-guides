@@ -118,7 +118,7 @@
             settings.yGuides.map(function ( v, y ) {
                 var e                   = document.createElement('div');
                 e.style.height          = (settings.yGuides[y] - 1) + "px";
-                e.style.borderBottom    = "1px solid " + settings.lineColor;
+                e.style.borderBottom    = "1px dotted " + settings.lineColor;
                 UI.yContainer.appendChild( e );
                 newDocHeight += parseInt( settings.yGuides[y], 10 );
             });
@@ -141,8 +141,8 @@
             style.height        = "100%";
             style.width         = (siteWidth - 2) + "px";
             style.marginLeft    = alignTo + "px";
-            style.borderLeft    = "1px solid " + settings.lineColor;
-            style.borderRight   = "1px solid " + settings.lineColor;
+            style.borderLeft    = "1px dotted " + settings.lineColor;
+            style.borderRight   = "1px dotted " + settings.lineColor;
             UI.wrapper.appendChild( UI.xContainer );
 
             if (!f.isObjEmpty(settings.xGuides)) {
@@ -165,7 +165,7 @@
                                         e.style.left        = availableWidth + "px";
                                         e.style.height      = "100%";
                                         e.style.width       = parseInt( x[index], 10 ) - 1 + "px";
-                                        e.style.borderRight = "1px solid " + settings.lineColor;
+                                        e.style.borderRight = "1px dotted " + settings.lineColor;
                                         availableWidth += parseInt( x[index], 10 );
                                         (availableWidth < siteWidth) ? UI.xContainer.appendChild( e ) : null;
                                     });
@@ -177,7 +177,7 @@
                             e.style.left        = availableWidth + "px";
                             e.style.height      = "100%";
                             e.style.width       = parseInt(settings.xGuides[i], 10) - 1 + "px";
-                            e.style.borderRight = "1px solid " + settings.lineColor;
+                            e.style.borderRight = "1px dotted " + settings.lineColor;
                             availableWidth += parseInt(settings.xGuides[i], 10);
                             (availableWidth < siteWidth) ? UI.xContainer.appendChild(e) : null;
                         }
