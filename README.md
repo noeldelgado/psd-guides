@@ -9,8 +9,8 @@ Can be usefull during slicing phase to accomplish pixel-perfect web layouts.
 ```js
 PSDGuides({
     canvasWidth : 1000,
-    xGuides     : [20, 355, 355, 250, 20],
-    yGuides     : [50, 100, 100, 250, 250, 50, 50, 50]
+    xGuides     : [20, "355 * 2", 250, 20],
+    yGuides     : [50, "100 * 2", "250 * 2", "50 * 3"]
 });
 ```
 ### Defaults
