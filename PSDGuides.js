@@ -1,13 +1,11 @@
-(function (window, undefined) {
+(function ( window, undefined ) {
 
     "use strict";
 
     window.PSDGuides = PSDGuides;
 
-    var doc     = window.document,
-        body    = document.getElementsByTagName("body")[0],
-        UI      = {},
-        f       = {},
+    var doc  = window.document,
+        body = document.getElementsByTagName("body")[0],
         settings = {
             show        : true,
             canvas      : body,
@@ -18,16 +16,18 @@
             xGuides     : {},
             yGuides     : {},
             zindex      : 9999
-        };
+        },
+        UI  = {},
+        f   = {};
 
-    function PSDGuides (options) {
-        f.extend(options);
+    function PSDGuides ( options ) {
+        f.extend( options );
         PSDGuides.prototype.init();
     }
 
     PSDGuides.prototype = {
         init : function () {
-            this.UI();
+            this.drawUI();
             this.bindEvents();
             this.draw();
         },
@@ -38,26 +38,28 @@
                     PSDGuides.prototype.draw();
                 }
             });
-            f.addEvent( UI.toggler, "click", function (e) {
+
+            f.addEvent( UI.toggler, "click", function () {
                 if ( UI.wrapper.style.display != "none" ) {
                     UI.wrapper.style.display = "none";
-                    settings.show = false;
                     UI.toggler.innerHTML = UI.toggler.textOff;
+                    settings.show = false;
                 } else {
                     UI.wrapper.style.display = "";
-                    settings.show = true;
                     UI.toggler.innerHTML = UI.toggler.textOn;
+                    settings.show = true;
                     PSDGuides.prototype.draw();
                 }
                 return false;
             });
         },
 
-        UI : function () {
-            UI.toggler = document.createElement("a");
-            UI.toggler.textOn   = "Hide PSDGuides.js";
-            UI.toggler.textOff  = "Show PSDGuides.js";
-            var style = UI.toggler.style;
+        drawUI : function () {
+            var style;
+            UI.toggler              = document.createElement("span");
+            style                   = UI.toggler.style;
+            UI.toggler.textOn       = "Hide PSDGuides.js";
+            UI.toggler.textOff      = "Show PSDGuides.js";
             style.position          = "fixed";
             style.right             = "10px";
             style.top               = "10px";
@@ -78,7 +80,8 @@
 
         draw : function () {
             var style;
-            this.clear();
+            this.clearAll();
+
             UI.wrapper              = document.createElement("div");
             style                   = UI.wrapper.style;
             style.position          = "absolute";
@@ -104,7 +107,8 @@
         },
 
         drawYLines : function () {
-            var newDocHeight    = 0,
+            var frag            =  document.createDocumentFragment(),
+                newDocHeight    = 0,
                 style           = null;
 
             UI.yContainer   = document.createElement("div");
@@ -113,26 +117,50 @@
             style.top       = 0;
             style.height    = "100%";
             style.width     = "100%";
-            UI.wrapper.appendChild( UI.yContainer );
 
-            settings.yGuides.map(function ( v, y ) {
-                var e                   = document.createElement('div');
-                e.style.height          = (settings.yGuides[y] - 1) + "px";
-                e.style.borderBottom    = "1px dotted " + settings.lineColor;
-                UI.yContainer.appendChild( e );
-                newDocHeight += parseInt( settings.yGuides[y], 10 );
+            settings.yGuides.map(function ( t, i ) {
+                var e;
+
+                if ( typeof t === "string" && t.indexOf("*") !== -1 ) {
+                    var elems   = t.replace(/[()\s]/g, "").split(/[,*]/g),
+                        j       = 0,
+                        l       = elems.length - 1,
+                        m       = elems[elems.length - 1];
+
+                    for ( ; j < m; j += 1 ) {
+                        elems.map(function ( tt, index ) {
+                            if ( index === l ) {
+                                return;
+                            }
+
+                            e = document.createElement('div');
+                            e.style.height          = (tt - 1) + "px";
+                            e.style.borderBottom    = "1px dotted " + settings.lineColor;
+                            newDocHeight            += parseInt( tt, 10 );
+                            frag.appendChild( e );
+                        });
+                    }
+                } else {
+                    e                       = document.createElement('div');
+                    e.style.height          = (t - 1) + "px";
+                    e.style.borderBottom    = "1px dotted " + settings.lineColor;
+                    newDocHeight            += parseInt( t, 10 );
+                    frag.appendChild( e );
+                }
             });
 
             newDocHeight            = Math.max( body.clientHeight, newDocHeight );
             UI.wrapper.style.height = newDocHeight;
+            UI.yContainer.appendChild( frag );
+            UI.wrapper.appendChild( UI.yContainer );
         },
 
         drawXLines : function () {
-            var siteWidth       = settings.canvasWidth > 0 ? settings.canvasWidth : f.getWidth(),
+            var frag            = document.createDocumentFragment(),
+                siteWidth       = settings.canvasWidth > 0 ? settings.canvasWidth : f.getWidth(),
                 availableWidth  = 0,
                 alignTo         = f.getOrientation( siteWidth ),
-                style           = null,
-                e;
+                style           = null;
 
             UI.xContainer       = document.createElement("div");
             style               = UI.xContainer.style;
@@ -143,50 +171,58 @@
             style.marginLeft    = alignTo + "px";
             style.borderLeft    = "1px dotted " + settings.lineColor;
             style.borderRight   = "1px dotted " + settings.lineColor;
-            UI.wrapper.appendChild( UI.xContainer );
 
-            if (!f.isObjEmpty(settings.xGuides)) {
-                while (availableWidth < siteWidth) {
-                    settings.xGuides.map(function (v, i) {
-                        var x = settings.xGuides[i],
-                            m;
-                        if ( typeof x === "string" ) {
-                            if ( x.indexOf("*") !== -1 ) {
-                                var j = 0;
-                                x = x.replace(/[()\s]/g, "").split(/[,*]/g);
-                                m = x[x.length - 1];
-                                for ( ; j < m; j += 1 ) {
-                                    x.map(function (v, index) {
-                                        if ( index === (x.length - 1) ) {
-                                            return;
-                                        }
-                                        e = document.createElement('div');
-                                        e.style.position    = "absolute";
-                                        e.style.left        = availableWidth + "px";
-                                        e.style.height      = "100%";
-                                        e.style.width       = parseInt( x[index], 10 ) - 1 + "px";
-                                        e.style.borderRight = "1px dotted " + settings.lineColor;
-                                        availableWidth += parseInt( x[index], 10 );
-                                        (availableWidth < siteWidth) ? UI.xContainer.appendChild( e ) : null;
-                                    });
-                                };
-                            }
-                        } else {
-                            e = document.createElement('div');
-                            e.style.position    = "absolute";
-                            e.style.left        = availableWidth + "px";
-                            e.style.height      = "100%";
-                            e.style.width       = parseInt(settings.xGuides[i], 10) - 1 + "px";
-                            e.style.borderRight = "1px dotted " + settings.lineColor;
-                            availableWidth += parseInt(settings.xGuides[i], 10);
-                            (availableWidth < siteWidth) ? UI.xContainer.appendChild(e) : null;
+            while ( availableWidth < siteWidth ) {
+                settings.xGuides.map(function ( t, i ) {
+                    var e;
+
+                    if ( typeof t === "string" && t.indexOf("*") !== -1 ) {
+                        var elems   = t.replace(/[()\s]/g, "").split(/[,*]/g),
+                            j       = 0,
+                            l       = elems.length - 1,
+                            m       = elems[elems.length - 1];
+
+                        for ( ; j < m; j += 1 ) {
+                            elems.map(function ( tt, index ) {
+                                if ( index === l ) {
+                                    return;
+                                }
+
+                                e = document.createElement('div');
+                                e.style.left = availableWidth + "px";
+
+                                availableWidth += parseInt( tt, 10 );
+
+                                if ( availableWidth < siteWidth ) {
+                                    e.style.position    = "absolute";
+                                    e.style.height      = "100%";
+                                    e.style.width       = parseInt( tt, 10 ) - 1 + "px";
+                                    e.style.borderRight = "1px dotted " + settings.lineColor;
+                                    frag.appendChild( e );
+                                }
+                            });
                         }
-                    });
-                }
+                    } else {
+                        e = document.createElement('div');
+                        e.style.left = availableWidth + "px";
+
+                        availableWidth += parseInt( t, 10 );
+
+                        if (availableWidth < siteWidth) {
+                            e.style.position    = "absolute";
+                            e.style.height      = "100%";
+                            e.style.width       = parseInt( t, 10 ) - 1 + "px";
+                            e.style.borderRight = "1px dotted " + settings.lineColor;
+                            frag.appendChild( e );
+                        }
+                    }
+                });
             }
+            UI.xContainer.appendChild( frag );
+            UI.wrapper.appendChild( UI.xContainer );
         },
 
-        clear : function () {
+        clearAll : function () {
             var e = document.getElementById('psGuidesWrapper');
             if ( e !== null ) {
                 body.removeChild( e );
@@ -196,7 +232,7 @@
 
     f.extend = function ( options ) {
         var i;
-        for (i in options) {
+        for ( i in options ) {
             if ( options.hasOwnProperty(i) ) {
                 settings[i] = options[i];
             }
@@ -213,7 +249,7 @@
             };
             obj.attachEvent( "on" + type, obj[ type + fn ] );
         }
-    }
+    };
 
     f.getHeight = function () {
         return  Math.max(
@@ -232,22 +268,24 @@
     };
 
     f.isObjEmpty = function ( obj ) {
-        return Object.getOwnPropertyNames( obj ).length === 0 ? true : false
+        return Object.getOwnPropertyNames( obj ).length === 0 ? true : false;
     };
 
     f.getOrientation = function ( siteWidth ) {
+        var x;
         switch ( settings.orientation ) {
             case "center":
-                return Math.floor( (f.getWidth() - siteWidth) / 2 );
+                x = Math.floor( (f.getWidth() - siteWidth) / 2 );
                 break;
             case "left":
-                return 0;
+                x = 0;
                 break;
             case "right":
-                return Math.floor( f.getWidth() - siteWidth );
+                x = Math.floor( f.getWidth() - siteWidth );
                 break;
             default:
-                return Math.floor( (f.getWidth() - siteWidth) / 2 );
-        };
+                x = Math.floor( (f.getWidth() - siteWidth) / 2 );
+        }
+        return x;
     };
-})(window);
+})( window );
