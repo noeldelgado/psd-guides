@@ -13,6 +13,9 @@ PSDGuides({
     yGuides     : [50, "100 * 2", "250 * 2", "50 * 3"]
 });
 ```
+
+Tip: When defining guides, if you have something like: `yGuides: [10, 10, 10, 20, 30, 20, 30, 20, 30]` you can use `yGuides: ["10 * 3", "(20, 30) * 3"]`.
+
 ### Defaults
 
 ```js
