@@ -14,7 +14,7 @@ PSDGuides({
 });
 ```
 
-Tip: When defining guides, if you have something like: `yGuides: [10, 10, 10, 20, 30, 20, 30, 20, 30]` you can use `yGuides: ["10 * 3", "(20, 30) * 3"]`.
+Tip: While defining your guides if you have similar values that needs to be repeated several times, like: `yGuides: [10, 10, 10, 10, 10, 20, 30, 20, 30, 20, 30]` you can use the `*` character followed by the number you want it to be repeated: `yGuides: ["10 * 5", "(20, 30) * 3"]`.
 
 ### Defaults
 
@@ -51,3 +51,11 @@ PSDGuides({
     xGuides     : [10, 40, 10]
 });
 ```
+
+##### 24-column grid
+
+```js
+PSDGuides({
+    canvasWidth : 960,
+    xGuides     : [10, 20, 10]
+});
