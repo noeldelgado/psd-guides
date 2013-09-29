@@ -6,7 +6,11 @@
 
     var doc  = window.document,
         body = document.getElementsByTagName("body")[0],
-        settings = {
+        UI  = {},
+        f   = {};
+
+    function PSDGuides ( options ) {
+        this.settings = {
             show        : true,
             canvas      : body,
             canvasWidth : 0,
@@ -16,16 +20,19 @@
             xGuides     : {},
             yGuides     : {},
             zindex      : 9999
-        },
-        UI  = {},
-        f   = {};
+        };
 
-    function PSDGuides ( options ) {
-        f.extend( options );
-        PSDGuides.prototype.init();
+        for ( var i in options ) {
+            if ( options.hasOwnProperty(i) ) {
+                this.settings[i] = options[i];
+            }
+        }
+
+        this.init();
     }
 
     PSDGuides.prototype = {
+
         init : function () {
             this.drawUI();
             this.bindEvents();
@@ -33,25 +40,42 @@
         },
 
         bindEvents : function () {
+            var that = this;
             f.addEvent( window, "resize", function () {
-                if ( settings.show ) {
-                    PSDGuides.prototype.draw();
+                if ( that.settings.show ) {
+                    that.draw();
                 }
             });
 
-            f.addEvent( UI.toggler, "click", function () {
-                if ( UI.wrapper.style.display != "none" ) {
-                    UI.wrapper.style.display = "none";
-                    UI.toggler.innerHTML = UI.toggler.textOff;
-                    settings.show = false;
-                } else {
-                    UI.wrapper.style.display = "";
-                    UI.toggler.innerHTML = UI.toggler.textOn;
-                    settings.show = true;
-                    PSDGuides.prototype.draw();
-                }
-                return false;
+            f.addEvent( UI.toggler, "click", function toggle() {
+                that.toggle();
             });
+
+            return this;
+        },
+
+        toggle : function() {
+            if ( UI.wrapper.style.display != "none" ) {
+                this.hide();
+            } else {
+                this.show();
+            }
+            return this;
+        },
+
+        show : function() {
+            UI.wrapper.style.display = "";
+            UI.toggler.innerHTML = UI.toggler.textOn;
+            this.settings.show = true;
+            this.draw();
+            return this;
+        },
+
+        hide : function() {
+            UI.wrapper.style.display = "none";
+            UI.toggler.innerHTML = UI.toggler.textOff;
+            this.settings.show = false;
+            return this;
         },
 
         drawUI : function () {
@@ -71,9 +95,9 @@
             style.fontFamily        = "'Helvetica Neue', Helvetica, Arial, sans-serif";
             style.fontSize          = "11px";
             style.fontWeight        = "bold";
-            style.zIndex            = settings.zindex + 1;
+            style.zIndex            = this.settings.zindex + 1;
             style.cursor            = "pointer";
-            UI.toggler.innerHTML    = settings.show ? UI.toggler.textOn : UI.toggler.textOff;
+            UI.toggler.innerHTML    = this.settings.show ? UI.toggler.textOn : UI.toggler.textOff;
             UI.toggler.setAttribute("id", "psdguide-ui");
             body.appendChild( UI.toggler );
         },
@@ -88,26 +112,27 @@
             style.top               = 0;
             style.width             = "100%";
             style.height            = f.getHeight() + "px";
-            style.zIndex            = settings.zindex;
-            style.backgroundColor   = settings.backColor;
+            style.zIndex            = this.settings.zindex;
+            style.backgroundColor   = this.settings.backColor;
             UI.wrapper.setAttribute("id", "psGuidesWrapper");
             body.appendChild( UI.wrapper );
 
-            if ( !settings.show ) {
+            if ( this.settings.show === false ) {
                 style.display = "none";
             }
 
-            if ( !f.isObjEmpty( settings.yGuides ) ) {
+            if ( !f.isObjEmpty( this.settings.yGuides ) ) {
                 this.drawYLines();
             }
 
-            if ( !f.isObjEmpty( settings.xGuides ) ) {
+            if ( !f.isObjEmpty( this.settings.xGuides ) ) {
                 this.drawXLines();
             }
         },
 
         drawYLines : function () {
-            var frag            =  document.createDocumentFragment(),
+            var that            = this,
+                frag            =  document.createDocumentFragment(),
                 newDocHeight    = 0,
                 style           = null;
 
@@ -118,7 +143,7 @@
             style.height    = "100%";
             style.width     = "100%";
 
-            settings.yGuides.map(function ( t, i ) {
+            this.settings.yGuides.map(function ( t, i ) {
                 var e;
 
                 if ( typeof t === "string" && t.indexOf("*") !== -1 ) {
@@ -135,7 +160,7 @@
 
                             e = document.createElement('div');
                             e.style.height          = (tt - 1) + "px";
-                            e.style.borderBottom    = "1px dotted " + settings.lineColor;
+                            e.style.borderBottom    = "1px dotted " + that.settings.lineColor;
                             newDocHeight            += parseInt( tt, 10 );
                             frag.appendChild( e );
                         });
@@ -143,7 +168,7 @@
                 } else {
                     e                       = document.createElement('div');
                     e.style.height          = (t - 1) + "px";
-                    e.style.borderBottom    = "1px dotted " + settings.lineColor;
+                    e.style.borderBottom    = "1px dotted " + that.settings.lineColor;
                     newDocHeight            += parseInt( t, 10 );
                     frag.appendChild( e );
                 }
@@ -156,10 +181,11 @@
         },
 
         drawXLines : function () {
-            var frag            = document.createDocumentFragment(),
-                siteWidth       = settings.canvasWidth > 0 ? settings.canvasWidth : f.getWidth(),
+            var that            = this,
+                frag            = document.createDocumentFragment(),
+                siteWidth       = this.settings.canvasWidth > 0 ? this.settings.canvasWidth : f.getWidth(),
                 availableWidth  = 0,
-                alignTo         = f.getOrientation( siteWidth ),
+                alignTo         = f.getOrientation( this, siteWidth ),
                 style           = null;
 
             UI.xContainer       = document.createElement("div");
@@ -169,11 +195,11 @@
             style.height        = "100%";
             style.width         = (siteWidth - 2) + "px";
             style.marginLeft    = alignTo + "px";
-            style.borderLeft    = "1px dotted " + settings.lineColor;
-            style.borderRight   = "1px dotted " + settings.lineColor;
+            style.borderLeft    = "1px dotted " + this.settings.lineColor;
+            style.borderRight   = "1px dotted " + this.settings.lineColor;
 
             while ( availableWidth < siteWidth ) {
-                settings.xGuides.map(function ( t, i ) {
+                this.settings.xGuides.map(function ( t, i ) {
                     var e;
 
                     if ( typeof t === "string" && t.indexOf("*") !== -1 ) {
@@ -197,7 +223,7 @@
                                     e.style.position    = "absolute";
                                     e.style.height      = "100%";
                                     e.style.width       = parseInt( tt, 10 ) - 1 + "px";
-                                    e.style.borderRight = "1px dotted " + settings.lineColor;
+                                    e.style.borderRight = "1px dotted " + that.settings.lineColor;
                                     frag.appendChild( e );
                                 }
                             });
@@ -212,7 +238,7 @@
                             e.style.position    = "absolute";
                             e.style.height      = "100%";
                             e.style.width       = parseInt( t, 10 ) - 1 + "px";
-                            e.style.borderRight = "1px dotted " + settings.lineColor;
+                            e.style.borderRight = "1px dotted " + that.settings.lineColor;
                             frag.appendChild( e );
                         }
                     }
@@ -226,15 +252,6 @@
             var e = document.getElementById('psGuidesWrapper');
             if ( e !== null ) {
                 body.removeChild( e );
-            }
-        }
-    };
-
-    f.extend = function ( options ) {
-        var i;
-        for ( i in options ) {
-            if ( options.hasOwnProperty(i) ) {
-                settings[i] = options[i];
             }
         }
     };
@@ -271,9 +288,9 @@
         return Object.getOwnPropertyNames( obj ).length === 0 ? true : false;
     };
 
-    f.getOrientation = function ( siteWidth ) {
+    f.getOrientation = function ( obj, siteWidth ) {
         var x;
-        switch ( settings.orientation ) {
+        switch ( obj.settings.orientation ) {
             case "center":
                 x = Math.floor( (f.getWidth() - siteWidth) / 2 );
                 break;

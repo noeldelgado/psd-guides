@@ -62,11 +62,12 @@
         </footer>
     </div>
 
-    <script src="../PSDGuides.min.js"></script>
+    <script src="../PSDGuides.js"></script>
 
   <script>
     window.onload = function () {
-        PSDGuides({
+        new PSDGuides({
+            show: true,
             canvasWidth : 1000,
             xGuides     : [20, "355 * 2", 250, 20],
             yGuides     : [50, "100 * 2", "250 * 2", "50 * 3"]

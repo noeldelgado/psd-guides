@@ -7,7 +7,7 @@ Can be usefull during slicing phase to accomplish pixel-perfect web layouts.
 ### Usage
 
 ```js
-PSDGuides({
+new PSDGuides({
     canvasWidth : 1000,
     xGuides     : [20, "355 * 2", 250, 20],
     yGuides     : [50, "100 * 2", "250 * 2", "50 * 3"]
@@ -19,12 +19,12 @@ Tip: While defining your guides if you have similar values that needs to be repe
 ### Defaults
 
 ```js
-show        : true, // Boolean : (true, false)
+show        : true, // Boolean
 canvas      : document.getElementsByTagName("body")[0],
 canvasWidth : 0, // Integer
 orientation : "center", // String : ("center", "left", "right")
-backColor   : "rgba(132, 170, 234, .25)", // Valid Color
-lineColor   : "rgba(73, 141, 255, 1)", // Valid Color
+backColor   : "rgba(132, 170, 234, .25)", // Valid color format
+lineColor   : "rgba(73, 141, 255, 1)", // Valid color format
 xGuides     : {},
 yGuides     : {},
 zindex      : 9999
@@ -37,7 +37,7 @@ Applying 960 grid system
 ##### 12-column grid
 
 ```js
-PSDGuides({
+new PSDGuides({
     canvasWidth : 960,
     xGuides     : [10, 60, 10]
 });
@@ -46,7 +46,7 @@ PSDGuides({
 ##### 16-column grid
 
 ```js
-PSDGuides({
+new PSDGuides({
     canvasWidth : 960,
     xGuides     : [10, 40, 10]
 });
@@ -55,7 +55,7 @@ PSDGuides({
 ##### 24-column grid
 
 ```js
-PSDGuides({
+new PSDGuides({
     canvasWidth : 960,
     xGuides     : [10, 20, 10]
 });
