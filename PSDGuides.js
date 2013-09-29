@@ -37,6 +37,7 @@
             this.drawUI();
             this.bindEvents();
             this.draw();
+            f.overrideCSS();
         },
 
         bindEvents : function () {
@@ -100,6 +101,7 @@
             UI.toggler.innerHTML    = this.settings.show ? UI.toggler.textOn : UI.toggler.textOff;
             UI.toggler.setAttribute("id", "psdguide-ui");
             body.appendChild( UI.toggler );
+            return this;
         },
 
         draw : function () {
@@ -286,6 +288,22 @@
 
     f.isObjEmpty = function ( obj ) {
         return Object.getOwnPropertyNames( obj ).length === 0 ? true : false;
+    };
+
+    f.overrideCSS = function () {
+        var css     = '#psGuidesWrapper * { -webkit-box-sizing: content-box !important; -moz-box-sizing: content-box !important; box-sizing: content-box !important; }',
+            head    = document.getElementsByTagName('head')[0],
+            style   = document.createElement('style');
+
+        style.type = 'text/css';
+
+        if ( style.styleSheet ) {
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild( document.createTextNode(css) );
+        }
+
+        head.appendChild( style );
     };
 
     f.getOrientation = function ( obj, siteWidth ) {
