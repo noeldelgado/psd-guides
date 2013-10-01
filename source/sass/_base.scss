@@ -5,9 +5,12 @@
 }
 
 body {
+  font-size: 12px;
+  line-height: 20px;
+
   background-color: $bg-color;
   color: $text-color;
-  font: 12px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -26,8 +29,8 @@ h2 {
 }
 
 section {
-  margin-bottom: 25px;
-  padding-bottom: 25px;
+  margin-bottom: 35px;
+  padding-bottom: 35px;
   border-bottom: 3px solid darken( $bg-color, 3 );
 
   &:after {
@@ -49,7 +52,7 @@ section {
 }
 
 .button {
-  float: left;
+  display: inline-block;
   margin: 0 15px 0 0;
   font-size: 1.1em;
   padding: 5px 15px;
