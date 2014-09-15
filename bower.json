@@ -1,0 +1,27 @@
+{
+  "name": "psdguides",
+  "main": "./dist/PSDGuides.min.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/noeldelgado/PSDGuides.js",
+  "authors": [
+    "Noel Delgado <auhcsei@gmail.com>"
+  ],
+  "description": "JS library to draw photoshop-like guides.",
+  "keywords": [
+    "psd",
+    "guides"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "examples",
+    "PSDGuides.js",
+    "README.md",
+    "gulpfile.js",
+    "package.json"
+  ]
+}
