@@ -3,24 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <title>PSDGuides.js - 960 Grid System Example</title>
-  <meta name="author" content="Noel Delgado">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="reset.css" type="text/css">
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
+  <link rel="stylesheet" href="assets/reset.css" type="text/css">
   <style>
+    body, button {
+      font-size: 14px;
+      font-family: Helvetica, Arial, sans-serif;
+    }
     #sample-container {
-      width: 960px; margin: 50px auto; padding: 0 10px;
+      width: 960px;
+      margin: 20px auto;
+      padding: 0 10px;
     }
     #sample-container p {
-      font-size: 12px;
-      font-family: Helvetica, Arial, sans-serif;
       text-align: center;
-      color: rgba(0, 0, 0, .5);
+      padding-top: 2.5em;
     }
     #sample-container header {
-      height: 200px;
+      height: 100px;
       background-color: #DCF5DC
     }
     #sample-container div[role='content'] {
@@ -42,8 +41,47 @@
       height: 100px;
       background-color: #DCDCF5
     }
+    .controls {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      margin-left: -90px;
+      width: 180px;
+      padding: .6em 0 .7em;
+      font-size: .85em;
+      z-index: 1;
+      background-color: rgba(255, 255, 255, 1);
+      text-align: center;
+      border-radius: 0 0 3px 3px;
+      box-shadow: 0 0 0 4px rgba(0,0,0,.15);
+      font-weight: 600;
+    }
+    .controls .label {
+      display: inline-block;
+      vertical-align: top;
+      padding: .3em .2em 0 0;
+    }
+    .controls button {
+      font-size: 1em;
+      margin: 0;
+      padding: .25em .6em;
+      vertical-align: top;
+      cursor: pointer;
+      outline: none;
+      background-color: rgba(0,0,0,.7);
+      color: #fff;
+      border-radius: 3px;
+      border: none;
+    }
+    .controls button:hover {
+      background-color: rgba(0,0,0,.6);
+    }
+    .controls button.active {
+      background-color: limegreen;
+    }
   </style>
 </head>
+
 <body>
   <div id="sample-container">
     <header>
@@ -62,16 +100,53 @@
     </footer>
   </div>
 
+  <div class="controls">
+    <span class="label">Columns:</span>
+    <button data-cols="12">12</button>
+    <button data-cols="16">16</button>
+    <button data-cols="24">24</button>
+  </div>
+
+  <!--
+  <script src="../dist/PSDGuides.min.js"></script>
+  -->
   <script src="../PSDGuides.js"></script>
 
+
   <script>
-    window.onload = function () {
-      // 960 Grid System - 12 Columns
-      new PSDGuides({
-        canvasWidth : 960,
-        xGuides     : [10, 60, 10]
-      });
-    };
+      window.onload = function () {
+          var buttons, guides, psd, activateFn;
+
+          buttons = {};
+          guides = {
+            '12': ["(10, 60, 10) * 12"],
+            '16': ["(10, 40, 10) * 16"],
+            '24': ["(10, 20, 10) * 24"]
+          };
+          psd = new PSDGuides({
+              canvasWidth : 960,
+              lineColor : "rgb(56, 172, 250)",
+              backColor : "rgba(56, 172, 250, .15)",
+              zIndex : 0
+          });
+          activateFn = function activateFn(ev) {
+              var cols = ev.target.getAttribute('data-cols');
+
+              Object.keys(buttons).forEach(function(propertyName) {
+                  buttons[propertyName].classList.remove('active');
+             });
+
+              buttons[cols].classList.add('active');
+              psd.removeHorizontalGuides().addHorizontalGuides(guides[cols]).activate();
+          };
+
+          [].splice.call(document.querySelectorAll('button'), 0).forEach(function(item) {
+              buttons[item.getAttribute('data-cols')] = item;
+              buttons[item.getAttribute('data-cols')].addEventListener('click', activateFn, false);
+          });
+
+          buttons['12'].click();
+      };
   </script>
 </body>
 </html>

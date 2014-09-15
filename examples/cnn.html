@@ -2,32 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>PSDGuides.js</title>
-  <meta name="author" content="Noel Delgado">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="reset.css" type="text/css">
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-
+  <title>PSDGuides.js - CNN Example</title>
+  <link rel="stylesheet" href="assets/reset.css" type="text/css">
   <style>
     body {
-      background: url('images/_cnn-bg-sample.png') 50% no-repeat;
+      background: url('assets/images/_cnn-bg-sample.png') 50% no-repeat;
       width: 100%; min-height: 2636px;
     }
   </style>
 </head>
 <body>
 
+
   <script src="../PSDGuides.js"></script>
+  <!--
+  <script src="../dist/PSDGuides.min.js"></script>
+  -->
 
   <script>
     window.onload = function () {
-      new PSDGuides({
+      window.psd = new PSDGuides({
         canvasWidth : 980,
-        xGuides     : [240, 10, 8, 232, 10, 175, 5, 60, 10],
-        yGuides     : [85, 35, 5, 20, 250, 15, 505, 9, 160, 9, 250, 10, 250, 9, 251, 9, 252, 9, 158, 9, 129, 35, 59, 50, 11]
+        horizontalGuides : [240, 10, 8, 232, 10, 175, 5, 60, 10],
+        verticalGuides : [85, 35, 5, 20, 250, 15, 505, 9, 160, 9, 250, 10, 250, 9, 251, 9, 252, 9, 158, 9, 129, 35, 59, 50, 11],
+        lineColor : 'red',
+        backColor : 'rgba(255, 0, 0, 0.1)'
       });
+
+      psd.activate();
     };
   </script>
 </body>

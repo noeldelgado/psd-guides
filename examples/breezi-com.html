@@ -2,31 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>PSDGuides.js</title>
-  <meta name="author" content="Noel Delgado">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="reset.css" type="text/css">
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-
+  <title>PSDGuides.js - Breezi Old Example</title>
+  <link rel="stylesheet" href="assets/reset.css" type="text/css">
   <style>
     body {
-      background: #000 url('images/breezi_com-sample.jpg') 50% 0 no-repeat;
+      background: #000 url('assets/images/breezi_com-sample.jpg') 50% 0 no-repeat;
       width: 100%; min-height: 10948px;
     }
   </style>
 </head>
 <body>
 
+  <!--
+  <script src="../dist/PSDGuides.min.js"></script>
+  -->
   <script src="../PSDGuides.js"></script>
 
   <script>
     window.onload = function () {
-      new PSDGuides({
+      window.psd = new PSDGuides({
         canvasWidth : 1400,
-        xGuides     : [40, 171, "(54, 30) * 5", 54, "15 * 2", "(54, 30) * 5", 54, 171],
-        yGuides     : [
+        horizontalGuides : [40, 171, "(54, 30) * 5", 54, "15 * 2", "(54, 30) * 5", 54, 171],
+        verticalGuides : [
           40, 72,
           50, 190, 185, 185, 90, 50, 40,
           178, 214, 16,
@@ -50,6 +47,8 @@
           602, 47
         ]
       });
+
+      psd.activate();
     };
   </script>
 </body>

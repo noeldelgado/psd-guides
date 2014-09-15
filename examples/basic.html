@@ -2,22 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>PSDGuides.js</title>
-    <meta name="author" content="Noel Delgado">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="reset.css" type="text/css">
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <title>PSDGuides.js - Basic Example</title>
+    <link rel="stylesheet" href="assets/reset.css" type="text/css">
     <style>
-        #sample-container {
-            width: 960px; margin: 50px auto
-        }
-        #sample-container p {
+        body, button {
             font-size: 12px;
             font-family: Helvetica, Arial, sans-serif;
+        }
+        #sample-container {
+            width: 960px;
+            margin: 50px auto;
+        }
+        #sample-container p {
             text-align: center;
-            color: rgba(0, 0, 0, .5);
+            padding-top: 2.5em;
         }
         #sample-container header {
           height: 200px;
@@ -42,6 +40,24 @@
             height: 100px;
             background-color: #DCDCF5
         }
+        .controls {
+          position: fixed;
+          top: 1em;
+          right: 1em;
+          z-index: 1;
+        }
+        .controls button {
+          cursor: pointer;
+          background-color: rgba(0,0,0,.7);
+          color: #fff;
+          border-radius: 3px;
+          font-weight: 600;
+          border: none;
+          padding: .5em 1em;
+        }
+        .controls button.active {
+          background-color: #09c;
+        }
     </style>
 </head>
 <body>
@@ -62,17 +78,41 @@
         </footer>
     </div>
 
+    <div class="controls">
+        <button>Toggle PDSGuides</button>
+    </div>
+
+    <!--
+    <script src="../dist/PSDGuides.min.js"></script>
+    -->
     <script src="../PSDGuides.js"></script>
 
-  <script>
-    window.onload = function () {
-        new PSDGuides({
-            show: true,
-            canvasWidth : 1000,
-            xGuides     : [20, "355 * 2", 250, 20],
-            yGuides     : [50, "100 * 2", "250 * 2", "50 * 3"]
-        });
-    };
+    <script>
+        window.onload = function () {
+            var button = document.querySelector('button');
+
+            button.addEventListener('click', function() {
+                if (psd.active) {
+                    return psd.deactivate();
+                }
+
+                return psd.activate();
+            });
+
+            window.psd = new PSDGuides({
+                canvasWidth : 1000,
+                horizontalGuides : [20],
+                verticalGuides : [50, "100 * 2", "250 * 2"],
+                zIndex : 0
+            });
+
+            psd.addHorizontalGuides(["355 * 2", 250]);
+            psd.addVerticalGuides(["50 * 3"]);
+            psd.activate();
+
+            console.log('horizontals', psd.getHorizontalGuides());
+            console.log('verticals', psd.getVerticalGuides());
+        };
     </script>
 </body>
 </html>

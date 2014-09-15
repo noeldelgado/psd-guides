@@ -1,326 +1,435 @@
-(function ( window, undefined ) {
+(function (global, undefined) {
 
-    "use strict";
-
-    window.PSDGuides = PSDGuides;
-
-    var doc  = window.document,
-        body = document.getElementsByTagName("body")[0],
-        UI  = {},
-        f   = {};
-
-    function PSDGuides ( options ) {
-        this.settings = {
-            show        : true,
-            canvas      : body,
+    function PSDGuides(config) {
+        this.config = {
+            canvas : document.body,
             canvasWidth : 0,
-            orientation : "center",
-            backColor   : "rgba(132, 170, 234, 0.25)",
-            lineColor   : "rgba(73, 141, 255, 1)",
-            xGuides     : {},
-            yGuides     : {},
-            zindex      : 9999
+            alignment : "center",
+            backColor : "rgba(132, 170, 234, 0.25)",
+            lineColor : "rgba(73, 141, 255, 1)",
+            horizontalGuides : [],
+            verticalGuides : [],
+            zindex : 9999
         };
+        this._ui = null;
+        this._verticalGuides = null;
+        this._horizontalGuides = null;
+        this.__resizeHandler = null;
+        this._reGroup = null;
+        this._reSplit = null;
+        this.active = null;
 
-        for ( var i in options ) {
-            if ( options.hasOwnProperty(i) ) {
-                this.settings[i] = options[i];
-            }
+        Object.keys(config).forEach(function(propertyName) {
+            this.config[propertyName] = config[propertyName];
+        }, this);
+
+        this._init();
+   }
+
+    PSDGuides.prototype._init = function _init() {
+        this._ui = {};
+        this.active = false;
+        this._verticalGuides = [];
+        this._horizontalGuides = [];
+        this._reGroup = new RegExp("[()\\s]","g");
+        this._reSplit = new RegExp("[,*]","g");
+
+        this._ui.documentElement = global.document.documentElement;
+        this._ui.body = global.document.body;
+        this._ui.wrapper = document.createElement("div");
+        this._ui.hContainer = document.createElement("div");
+        this._ui.vContainer = document.createElement("div");
+
+        this._setStyles(this._ui.wrapper, {
+            display : "none",
+            position : "absolute",
+            top : 0,
+            zIndex : this.config.zIndex,
+            backgroundColor: this.config.backColor
+        })._setStyles(this._ui.hContainer, {
+            position : "absolute",
+            top : 0,
+            height : "100%",
+            borderLeft : "1px dotted " + this.config.lineColor,
+            borderRight : "1px dotted " + this.config.lineColor
+        })._setStyles(this._ui.vContainer, {
+            position : "absolute",
+            top : 0,
+            height : "100%",
+            width : "100%"
+        });
+
+        this._ui.wrapper.className = "psd-guides-wrapper";
+        this.config.canvas.appendChild(this._ui.wrapper);
+
+        this._bindEvents();
+        this._overrideCSS();
+        this.addVerticalGuides(this.config.verticalGuides);
+        this.addHorizontalGuides(this.config.horizontalGuides);
+        this.update();
+
+        return this;
+    };
+
+    PSDGuides.prototype._bindEvents = function _bindEvents() {
+        this.__resizeHandler = this._resizeHandler.bind(this);
+        global.addEventListener("resize", this.__resizeHandler, false);
+
+        return this;
+    };
+
+    PSDGuides.prototype._resizeHandler = function _resizeHandler() {
+        if (this.active) {
+            this._hide();
+            global.clearTimeout(this._resizeTimer);
+            this._resizeTimer = global.setTimeout(function() {
+                this.update().activate();
+            }.bind(this), 250);
         }
+    };
 
-        this.init();
-    }
+    /**
+     * Add guides to the _verticalGuides Array holder.
+     * @property addVerticalGuides <public> [Function]
+     * @argument guides <required> [Array]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype.addVerticalGuides = function addVerticalGuides(guides) {
+        this._verticalGuides = this._verticalGuides.concat(this._getParsedGuides(guides));
 
-    PSDGuides.prototype = {
+        return this;
+    };
 
-        init : function () {
-            this.drawUI();
-            this.bindEvents();
-            this.draw();
-            f.overrideCSS();
-        },
+    /**
+     * Add guides to the _horizontalGuides Array holder.
+     * @property addHorizontalGuides <public> [Function]
+     * @argument guides <required> [Array]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype.addHorizontalGuides = function addHorizontalGuides(guides) {
+        this._horizontalGuides = this._horizontalGuides.concat(this._getParsedGuides(guides));
 
-        bindEvents : function () {
-            var that = this;
-            f.addEvent( window, "resize", function () {
-                if ( that.settings.show ) {
-                    that.draw();
-                }
-            });
+        return this;
+    };
 
-            f.addEvent( UI.toggler, "click", function toggle() {
-                that.toggle();
-            });
+    /**
+     * Check if the guides needs to be translated into Numbers.
+     * parsed = this._getParsedGuides([100, "200 * 4"], 100);
+     * => [100, 200, 200, 200, 200, 100]
+     * @property _getParsedGuides <private> [Function]
+     * @argument guides <required> [Array]
+     * @return _parsedGuides [Array]
+     */
+    PSDGuides.prototype._getParsedGuides = function _getParsedGuides(guides) {
+        var _parsedGuides = [];
 
-            return this;
-        },
+        guides.map(function (guide) {
+            if ((typeof guide === "string") && (guide.indexOf("*") !== -1)) {
+                var values, times, length, i, j;
 
-        toggle : function() {
-            if ( UI.wrapper.style.display != "none" ) {
-                this.hide();
-            } else {
-                this.show();
-            }
-            return this;
-        },
+                values = guide.replace(this._reGroup, "").split(this._reSplit);
+                times = values.pop();
+                length = values.length;
 
-        show : function() {
-            UI.wrapper.style.display = "";
-            UI.toggler.innerHTML = UI.toggler.textOn;
-            this.settings.show = true;
-            this.draw();
-            return this;
-        },
-
-        hide : function() {
-            UI.wrapper.style.display = "none";
-            UI.toggler.innerHTML = UI.toggler.textOff;
-            this.settings.show = false;
-            return this;
-        },
-
-        drawUI : function () {
-            var style;
-            UI.toggler              = document.createElement("span");
-            style                   = UI.toggler.style;
-            UI.toggler.textOn       = "Hide PSDGuides.js";
-            UI.toggler.textOff      = "Show PSDGuides.js";
-            style.position          = "fixed";
-            style.right             = "10px";
-            style.top               = "10px";
-            style.padding           = "5px 10px";
-            style.border            = "1px solid #000";
-            style.backgroundColor   = "rgba(0, 0, 0, 0.7)";
-            style.borderRadius      = "3px";
-            style.color             = "#f0f0f0";
-            style.fontFamily        = "'Helvetica Neue', Helvetica, Arial, sans-serif";
-            style.fontSize          = "11px";
-            style.fontWeight        = "bold";
-            style.zIndex            = this.settings.zindex + 1;
-            style.cursor            = "pointer";
-            UI.toggler.innerHTML    = this.settings.show ? UI.toggler.textOn : UI.toggler.textOff;
-            UI.toggler.setAttribute("id", "psdguide-ui");
-            body.appendChild( UI.toggler );
-            return this;
-        },
-
-        draw : function () {
-            var style;
-            this.clearAll();
-
-            UI.wrapper              = document.createElement("div");
-            style                   = UI.wrapper.style;
-            style.position          = "absolute";
-            style.top               = 0;
-            style.width             = "100%";
-            style.height            = f.getHeight() + "px";
-            style.zIndex            = this.settings.zindex;
-            style.backgroundColor   = this.settings.backColor;
-            UI.wrapper.setAttribute("id", "psGuidesWrapper");
-            body.appendChild( UI.wrapper );
-
-            if ( this.settings.show === false ) {
-                style.display = "none";
-            }
-
-            if ( !f.isObjEmpty( this.settings.yGuides ) ) {
-                this.drawYLines();
-            }
-
-            if ( !f.isObjEmpty( this.settings.xGuides ) ) {
-                this.drawXLines();
-            }
-        },
-
-        drawYLines : function () {
-            var that            = this,
-                frag            =  document.createDocumentFragment(),
-                newDocHeight    = 0,
-                style           = null;
-
-            UI.yContainer   = document.createElement("div");
-            style           = UI.yContainer.style;
-            style.position  = "absolute";
-            style.top       = 0;
-            style.height    = "100%";
-            style.width     = "100%";
-
-            this.settings.yGuides.map(function ( t, i ) {
-                var e;
-
-                if ( typeof t === "string" && t.indexOf("*") !== -1 ) {
-                    var elems   = t.replace(/[()\s]/g, "").split(/[,*]/g),
-                        j       = 0,
-                        l       = elems.length - 1,
-                        m       = elems[elems.length - 1];
-
-                    for ( ; j < m; j += 1 ) {
-                        elems.map(function ( tt, index ) {
-                            if ( index === l ) {
-                                return;
-                            }
-
-                            e = document.createElement('div');
-                            e.style.height          = (tt - 1) + "px";
-                            e.style.borderBottom    = "1px dotted " + that.settings.lineColor;
-                            newDocHeight            += parseInt( tt, 10 );
-                            frag.appendChild( e );
-                        });
+                for (i = 0; i < times; i++) {
+                    for (j = 0; j < length; j++) {
+                        _parsedGuides.push(~~values[j]);
                     }
-                } else {
-                    e                       = document.createElement('div');
-                    e.style.height          = (t - 1) + "px";
-                    e.style.borderBottom    = "1px dotted " + that.settings.lineColor;
-                    newDocHeight            += parseInt( t, 10 );
-                    frag.appendChild( e );
                 }
+
+                return;
+            }
+
+            _parsedGuides.push(~~guide);
+        }, this);
+
+        return _parsedGuides;
+    };
+
+    /**
+     * Create the vertical guides DOMElements and append them to its parent.
+     * @property _createVerticalLines <private> [Function]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype._createVerticalLines = function _createVerticalLines() {
+        var fragment, newDocHeight;
+
+        fragment = document.createDocumentFragment();
+        newDocHeight = 0;
+
+        this.getVerticalGuides().map(function (guide) {
+            this._appendLine(fragment, {
+                height : guide + "px",
+                borderBottom : "1px dotted " + this.config.lineColor
             });
 
-            newDocHeight            = Math.max( body.clientHeight, newDocHeight );
-            UI.wrapper.style.height = newDocHeight;
-            UI.yContainer.appendChild( frag );
-            UI.wrapper.appendChild( UI.yContainer );
-        },
+            newDocHeight += guide;
+        }, this);
 
-        drawXLines : function () {
-            var that            = this,
-                frag            = document.createDocumentFragment(),
-                siteWidth       = this.settings.canvasWidth > 0 ? this.settings.canvasWidth : f.getWidth(),
-                availableWidth  = 0,
-                alignTo         = f.getOrientation( this, siteWidth ),
-                style           = null;
+        newDocHeight = Math.max(this._ui.body.clientHeight, newDocHeight);
 
-            UI.xContainer       = document.createElement("div");
-            style               = UI.xContainer.style;
-            style.position      = "fixed";
-            style.top           = 0;
-            style.height        = "100%";
-            style.width         = (siteWidth - 2) + "px";
-            style.marginLeft    = alignTo + "px";
-            style.borderLeft    = "1px dotted " + this.settings.lineColor;
-            style.borderRight   = "1px dotted " + this.settings.lineColor;
+        this._ui.wrapper.style.height = newDocHeight;
+        this._ui.vContainer.appendChild(fragment);
+        this._ui.wrapper.appendChild(this._ui.vContainer);
 
-            while ( availableWidth < siteWidth ) {
-                this.settings.xGuides.map(function ( t, i ) {
-                    var e;
+        return this;
+    };
 
-                    if ( typeof t === "string" && t.indexOf("*") !== -1 ) {
-                        var elems   = t.replace(/[()\s]/g, "").split(/[,*]/g),
-                            j       = 0,
-                            l       = elems.length - 1,
-                            m       = elems[elems.length - 1];
+    /**
+     * Create the horizontal guides DOMElements and append them to its parent.
+     * @prototype _createHorizontalLines <private> [Object]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype._createHorizontalLines = function _createHorizontalLines() {
+        var fragment, siteWidth, coveredWidth;
 
-                        for ( ; j < m; j += 1 ) {
-                            elems.map(function ( tt, index ) {
-                                if ( index === l ) {
-                                    return;
-                                }
+        fragment = document.createDocumentFragment();
+        siteWidth = this.config.canvasWidth || PSDGuides.Utils.getWidth();
+        coveredWidth = 0;
 
-                                e = document.createElement('div');
-                                e.style.left = availableWidth + "px";
+        this._setStyles(this._ui.hContainer, {
+            width : (siteWidth) + "px",
+            marginLeft : this._getAligment(siteWidth) + "px"
+        }).getHorizontalGuides().map(function (guide) {
+            this._appendLine(fragment, {
+                position : "absolute",
+                left : coveredWidth + "px",
+                width : guide + "px",
+                height : "100%",
+                borderRight : "1px dotted " + this.config.lineColor
+            });
 
-                                availableWidth += parseInt( tt, 10 );
+            coveredWidth += guide;
+        }, this);
 
-                                if ( availableWidth < siteWidth ) {
-                                    e.style.position    = "absolute";
-                                    e.style.height      = "100%";
-                                    e.style.width       = parseInt( tt, 10 ) - 1 + "px";
-                                    e.style.borderRight = "1px dotted " + that.settings.lineColor;
-                                    frag.appendChild( e );
-                                }
-                            });
-                        }
-                    } else {
-                        e = document.createElement('div');
-                        e.style.left = availableWidth + "px";
+        this._ui.hContainer.appendChild(fragment);
+        this._ui.wrapper.appendChild(this._ui.hContainer);
 
-                        availableWidth += parseInt( t, 10 );
+        return this;
+    };
 
-                        if (availableWidth < siteWidth) {
-                            e.style.position    = "absolute";
-                            e.style.height      = "100%";
-                            e.style.width       = parseInt( t, 10 ) - 1 + "px";
-                            e.style.borderRight = "1px dotted " + that.settings.lineColor;
-                            frag.appendChild( e );
-                        }
-                    }
-                });
-            }
-            UI.xContainer.appendChild( frag );
-            UI.wrapper.appendChild( UI.xContainer );
-        },
-
-        clearAll : function () {
-            var e = document.getElementById('psGuidesWrapper');
-            if ( e !== null ) {
-                body.removeChild( e );
-            }
+    /**
+     * Remove the guide elements from the DOM.
+     * @property _removeLines <private> [Function]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype._removeLines = function _removeLines() {
+        while (this._ui.hContainer.firstChild) {
+            this._ui.hContainer.removeChild(this._ui.hContainer.firstChild);
         }
-    };
 
-    f.addEvent = function ( obj, type, fn ) {
-        if ( obj.addEventListener ) {
-            obj.addEventListener( type, fn, false );
-        } else if ( obj.attachEvent ) {
-            obj[ 'e' + type + fn ] = fn;
-            obj[ type + fn ] = function() {
-                obj[ 'e' + type + fn ]( window.event );
-            };
-            obj.attachEvent( "on" + type, obj[ type + fn ] );
+        while (this._ui.vContainer.firstChild) {
+            this._ui.vContainer.removeChild(this._ui.vContainer.firstChild);
         }
+
+        return this;
     };
 
-    f.getHeight = function () {
-        return  Math.max(
-            Math.max( body.scrollHeight, doc.documentElement.scrollHeight ),
-            Math.max( body.offsetHeight, doc.documentElement.offsetHeight ),
-            Math.max( body.clientHeight, doc.documentElement.clientHeight )
-        );
+    /**
+     * Crate a new Element (line) and append it to the parentElement passed as
+     * the first argument. It will also add the styles passed as second param.
+     * @property _appendLine <private> [Function]
+     * @argument parent <required> [DOMElement] the element to append the line.
+     * @argument styles <optional> [Object] the styles to be added to the line.
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype._appendLine = function _appendLine(parent, styles) {
+        var line = document.createElement("div");
+
+        this._setStyles(line, styles);
+        parent.appendChild(line);
+
+        return this;
     };
 
-    f.getWidth = function () {
-         return  Math.max(
-            Math.max( body.scrollWidth, doc.documentElement.scrollWidth ),
-            Math.max( body.offsetWidth, doc.documentElement.offsetWidth ),
-            Math.max( body.clientWidth, doc.documentElement.clientWidth )
-        );
+    /**
+     * Return the max available width or height of the document.
+     * @property _getMaxSize <private> [Function]
+     * @argument prop <required> [String] "Width|Height"
+     * @return Math.max(...) [Number]
+     */
+    PSDGuides.prototype._getMaxSize = function _getMaxSize(prop) {
+        var scroll, offset, client;
+
+        scroll = Math.max(this._ui.body['scroll' + prop], this._ui.documentElement['scroll' + prop]);
+        offset = Math.max(this._ui.body['offset' + prop], this._ui.documentElement['offset' + prop]);
+        client = Math.max(this._ui.body['client' + prop], this._ui.documentElement['client' + prop]);
+
+        return Math.max(scroll, offset, client);
     };
 
-    f.isObjEmpty = function ( obj ) {
-        return Object.getOwnPropertyNames( obj ).length === 0 ? true : false;
+    /**
+     * Return the number of pixels for psd-guides container to be aligned.
+     * @property _getAligment <private> [Function]
+     * @return [Number]
+     */
+    PSDGuides.prototype._getAligment = function _getAligment(siteWidth) {
+        if (this.config.alignment === "left") {
+            return 0;
+        }
+
+        if (this.config.alignment === "right") {
+            return Math.floor(this._getMaxSize("Width") - siteWidth);
+        }
+
+        return Math.floor((this._getMaxSize("Width") - siteWidth) / 2);
     };
 
-    f.overrideCSS = function () {
-        var css     = '#psGuidesWrapper * { -webkit-box-sizing: content-box !important; -moz-box-sizing: content-box !important; box-sizing: content-box !important; }',
-            head    = document.getElementsByTagName('head')[0],
-            style   = document.createElement('style');
+    /**
+     * Utility method for adding styles to elements.
+     * @property _setStyles <private> [Function]
+     * @argument element <required> [DOMElement]
+     * @argument hash <required> [Object]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype._setStyles = function _setStyles(element, hash) {
+        Object.keys(hash).forEach(function(propertyName) {
+            element.style[propertyName] = hash[propertyName];
+        });
 
-        style.type = 'text/css';
+        return this;
+    };
 
-        if ( style.styleSheet ) {
+    /**
+     * CSS override utility.
+     * @property _overrideCSS <private> [Function]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype._overrideCSS = function _overrideCSS() {
+        var css, head, style;
+
+        css = ".psd-guides-wrapper * {-webkit-box-sizing: border-box !important; box-sizing: border-box !important;}";
+        head = document.getElementsByTagName("head")[0];
+        style = document.createElement("style");
+
+        style.type = "text/css";
+
+        if (style.styleSheet) {
             style.styleSheet.cssText = css;
         } else {
-            style.appendChild( document.createTextNode(css) );
+            style.appendChild(document.createTextNode(css));
         }
 
-        head.appendChild( style );
+        head.appendChild(style);
+
+        return this;
     };
 
-    f.getOrientation = function ( obj, siteWidth ) {
-        var x;
-        switch ( obj.settings.orientation ) {
-            case "center":
-                x = Math.floor( (f.getWidth() - siteWidth) / 2 );
-                break;
-            case "left":
-                x = 0;
-                break;
-            case "right":
-                x = Math.floor( f.getWidth() - siteWidth );
-                break;
-            default:
-                x = Math.floor( (f.getWidth() - siteWidth) / 2 );
-        }
-        return x;
+    PSDGuides.prototype._hide = function _hide() {
+        this._ui.wrapper.style.display = "none";
     };
-})( window );
+
+    /**
+     * Return the current saved horizontal guides.
+     * @property getHorizontalGuides <public> [Function]
+     * @return this._horizontalGuides [Array]
+     */
+    PSDGuides.prototype.getHorizontalGuides = function getHorizontalGuides() {
+        return this._horizontalGuides;
+    };
+
+    /**
+     * Return the current saved vertical guides.
+     * @property getVerticalGuides <public> [Function]
+     * @return this._verticalGuides [Array]
+     */
+    PSDGuides.prototype.getVerticalGuides = function getVerticalGuides() {
+        return this._verticalGuides;
+    };
+
+    /**
+     * Clear the horizontal guides array reference.
+     * @property removeHorizontalGuides <public> [Function]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype.removeHorizontalGuides = function removeHorizontalGuides() {
+        this._horizontalGuides = [];
+
+        return this;
+    };
+
+    /**
+     * Clear the vertical guides array reference.
+     * @property removeVerticalGuides <public> [Function]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype.removeVerticalGuides = function removeVerticalGuides() {
+        this._verticalGuides = [];
+
+        return this;
+    };
+
+    /**
+     * Clear both horizontal and vertical array references.
+     * @property removeGuides <public> [Function]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype.removeGuides = function removeGuides() {
+        this.removeHorizontalGuides().removeVerticalGuides();
+
+        return this;
+    };
+
+    /**
+     * Update the width and height of psd-guides container,
+     * remove and create the guides using the guides array references.
+     * @property update <public> [Function]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype.update = function update() {
+        this._setStyles(this._ui.wrapper, {
+            width : this._getMaxSize("Width") + "px",
+            height : this._getMaxSize("Height") + "px"
+        })._removeLines()._createVerticalLines()._createHorizontalLines();
+
+        return this;
+    };
+
+    /**
+     * Display the guides.
+     * @property activate <public> [Function]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype.activate = function activate() {
+        this.active = true;
+        this.update();
+        this._ui.wrapper.style.display = "";
+
+        return this;
+    };
+
+    /**
+     * Hide the guides.
+     * @property deactivate <public> [Function]
+     * @return this [PSDGuides]
+     */
+    PSDGuides.prototype.deactivate = function deactivate() {
+        this.active = false;
+        this._hide();
+
+        return this;
+    };
+
+    /**
+     * Clean all references to other objects and remove DOMElements.
+     * @property destroy <public> [Function]
+     * @return null
+     */
+    PSDGuides.prototype.destroy = function destroy () {
+        this._removeLines();
+        this._ui.wrapper.removeChild(this._ui.vContainer);
+        this._ui.wrapper.removeChild(this._ui.hContainer);
+        this.config.canvas.removeChild(this._ui.wrapper);
+        global.removeEventListener("resize", this.__resizeHandler, false);
+
+        Object.keys(this).forEach(function(propertyName) {
+            delete this[propertyName];
+        }, this);
+
+        return null;
+
+    };
+
+    global.PSDGuides = PSDGuides;
+
+})(window);
