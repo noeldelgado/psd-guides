@@ -1,11 +1,8 @@
 {
-  "name": "psdguides",
+  "name": "psd-guides",
   "version": "1.0.0",
   "description": "Draw photoshop-like guides",
   "main": "./dist/PSDGuides.js",
-  "directories": {
-    "example": "examples"
-  },
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.8.7",
@@ -16,12 +13,9 @@
     "gulp-uglify": "^1.0.1",
     "gulp-rename": "^1.2.0"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/noeldelgado/PSDGuides.js.git"
+    "url": "git://github.com/noeldelgado/psd-guides.git"
   },
   "keywords": [
     "rules",
@@ -30,7 +24,7 @@
   "author": "Noel Delgado <auhcsei@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/noeldelgado/PSDGuides.js/issues"
+    "url": "https://github.com/noeldelgado/psd-guides/issues"
   },
-  "homepage": "https://github.com/noeldelgado/PSDGuides.js"
+  "homepage": "https://github.com/noeldelgado/psd-guides"
 }

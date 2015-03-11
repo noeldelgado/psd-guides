@@ -430,6 +430,8 @@
 
     };
 
-    global.PSDGuides = PSDGuides;
+    if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+        module.exports = PSDGuides;
+    } else window.PSDGuides = PSDGuides;
 
-})(window);
+})();
