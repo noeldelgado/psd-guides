@@ -1,5 +1,5 @@
 # PSDGuides.js
-http://noeldelgado.github.io/PSDGuides.js/
+http://noeldelgado.github.io/psd-guides/
 
 PSDGuides.js is a simple script to draw photoshop-like guides.
 
