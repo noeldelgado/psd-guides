@@ -1,4 +1,8 @@
 # PSDGuides.js
+
+[![npm-image](https://img.shields.io/npm/v/psd-guides.svg?style=flat-square)](https://www.npmjs.com/package/psd-guides)
+![bower-image](https://img.shields.io/bower/v/psd-guides.svg?style=flat-square)
+
 http://noeldelgado.github.io/psd-guides/
 
 PSDGuides.js is a simple script to draw photoshop-like guides.
