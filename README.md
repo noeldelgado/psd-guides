@@ -1,15 +1,24 @@
-# PSDGuides.js
+# psd-guides
 
 [![npm-image](https://img.shields.io/npm/v/psd-guides.svg?style=flat-square)](https://www.npmjs.com/package/psd-guides)
 ![bower-image](https://img.shields.io/bower/v/psd-guides.svg?style=flat-square)
 
 http://noeldelgado.github.io/psd-guides/
 
-PSDGuides.js is a simple script to draw photoshop-like guides.
+psd-guides is a simple script to draw photoshop-like guides.
 
 Can be useful during slicing phase to accomplish pixel-perfect web layouts.
 
-# Usage
+## Installation
+**NPM**
+
+	npm install psd-guides --save
+	
+**BOWER**
+
+	bower install psd-guides --save
+	
+## Usage
 ```javascript
 new PSDGuides({
   canvasWidth : 1000,
@@ -20,7 +29,7 @@ new PSDGuides({
 
 **Tip:** While defining your guides, if you have similar values that needs to be repeated several times, instead of writing them all you can use the `*` character followed by the number you want it to be repeated, for instance: `vericalGuides : [10, 10, 10, 10, 10, 20, 30, 20, 30, 20, 30]` can be written as `verticalGuides : ["10 * 5", "(20, 30) * 3"]`
 
-# Defaults
+## Defaults
 ```javascript
 {
   canvas : document.body,                 // [DOMElement]
@@ -34,9 +43,9 @@ new PSDGuides({
 }
 ```
 
-# API
+## API
 
-## activate
+### activate
 ```javascript
 /**
  * Display the guides.
@@ -53,7 +62,7 @@ var psd = new PSDGuides({
 psd.activate();
 ```
 
-## deactivate
+### deactivate
 ```javascript
 /**
  * Hide the guides.
@@ -64,7 +73,7 @@ psd.activate();
 psd.deactivate();
 ```
 
-## update
+### update
 ```javascript
 /**
  * Update the width and height of psd-guides container,
@@ -76,7 +85,7 @@ psd.deactivate();
 psd.update();
 ```
 
-## destroy
+### destroy
 ```javascript
 /**
  * Clean all references to other objects and remove DOMElements.
@@ -88,10 +97,10 @@ psd.destroy();
 // => null
 ```
 
-## # Removing guides
+### # Removing guides
 When guides are removed, you need to call the `update` or `activate` method to reflect the changes.
 
-## removeHorizontalGuides
+### removeHorizontalGuides
 ```javascript
 /**
  * Clear the horizontal guides array reference.
@@ -106,7 +115,7 @@ psd.removeHorizontalGuides();
 // => [50, 100, 100, 250, 250, 50, 50, 50]
 ```
 
-## removeVerticalGuides
+### removeVerticalGuides
 ```javascript
 /**
  * Clear the vertical guides array reference.
@@ -119,7 +128,7 @@ psd.removeVerticalGuides();
 // => []
 ```
 
-## removeGuides
+### removeGuides
 ```javascript
 /**
  * Clear both horizontal and vertical array references.
@@ -130,10 +139,10 @@ psd.removeVerticalGuides();
 psd.removeGuides().update();
 ```
 
-## # Adding guides
+### # Adding guides
 When adding guides, you need to call the `update` or `activate` method after to reflect the changes.
 
-## addHorizontalGuides
+### addHorizontalGuides
 ```javascript
 /**
  * Add guides to the _horizontalGuides Array holder.
@@ -147,7 +156,7 @@ psd.addHorizontalGuides([20, "355 * 2", 250]).update();
 // => [20, 355, 355, 250]
 ```
 
-## addVericalGuides
+### addVericalGuides
 ```javascript
 /**
  * Add guides to the _verticalGuides Array holder.
@@ -161,10 +170,10 @@ psd.addVerticalGuides([50, "100 * 2", "250 * 2", "50 * 3"]).update();
 // => [50, 100, 100, 250, 250, 50, 50, 50]
 ```
 
-## # Getting the guides
+### # Getting the guides
 Get current saved guides.
 
-## getHorizontalGuides
+### getHorizontalGuides
 ```javascript
 /**
  * Return the current saved horizontal guides.
@@ -176,7 +185,7 @@ psd.getHorizontalGuides();
 // => [20, 355, 355, 250]
 ```
 
-## getVerticalGuides
+### getVerticalGuides
 ```javascript
 /**
  * Return the current saved vertical guides.
@@ -188,11 +197,11 @@ psd.getVerticalGuides();
 // => [50, 100, 100, 250, 250, 50, 50, 50]
 ```
 
-# Examples (960 Grid System)
+## Examples (960 Grid System)
 
 Applying 960 grid system
 
-## 12-column grid
+### 12-column grid
 ```javascript
 new PSDGuides({
     canvasWidth : 960,
@@ -200,7 +209,7 @@ new PSDGuides({
 }).activate()
 ```
 
-## 16-column grid
+### 16-column grid
 ```javascript
 new PSDGuides({
     canvasWidth : 960,
@@ -208,7 +217,7 @@ new PSDGuides({
 }).activate();
 ```
 
-## 24-column grid
+### 24-column grid
 ```javascript
 new PSDGuides({
     canvasWidth : 960,
