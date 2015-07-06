@@ -2,7 +2,7 @@
   "name": "psd-guides",
   "version": "1.0.0",
   "description": "Draw photoshop-like guides",
-  "main": "./dist/PSDGuides.js",
+  "main": "./PSDGuides.js",
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.8.7",
