@@ -1,6 +1,6 @@
 {
   "name": "psd-guides",
-  "main": "./dist/PSDGuides.min.js",
+  "main": "./PSDGuides.js",
   "version": "1.0.0",
   "homepage": "https://github.com/noeldelgado/psd-guides",
   "authors": [

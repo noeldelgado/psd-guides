@@ -4,15 +4,7 @@
   "description": "Draw photoshop-like guides",
   "main": "./PSDGuides.js",
   "dependencies": {},
-  "devDependencies": {
-    "gulp": "^3.8.7",
-    "gulp-concat": "^2.4.0",
-    "gulp-livereload": "^2.1.1",
-    "gulp-connect": "^2.0.6",
-    "gulp-header": "^1.1.0",
-    "gulp-uglify": "^1.0.1",
-    "gulp-rename": "^1.2.0"
-  },
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git://github.com/noeldelgado/psd-guides.git"
