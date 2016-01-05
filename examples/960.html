@@ -107,12 +107,7 @@
     <button data-cols="24">24</button>
   </div>
 
-  <!--
-  <script src="../dist/PSDGuides.min.js"></script>
-  -->
   <script src="../PSDGuides.js"></script>
-
-
   <script>
       window.onload = function () {
           var buttons, guides, psd, activateFn;
@@ -140,7 +135,7 @@
               psd.removeHorizontalGuides().addHorizontalGuides(guides[cols]).activate();
           };
 
-          [].splice.call(document.querySelectorAll('button'), 0).forEach(function(item) {
+          [].slice.call(document.querySelectorAll('button'), 0).forEach(function(item) {
               buttons[item.getAttribute('data-cols')] = item;
               buttons[item.getAttribute('data-cols')].addEventListener('click', activateFn, false);
           });

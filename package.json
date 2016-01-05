@@ -1,6 +1,6 @@
 {
   "name": "psd-guides",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Draw photoshop-like guides",
   "main": "./PSDGuides.js",
   "dependencies": {},
