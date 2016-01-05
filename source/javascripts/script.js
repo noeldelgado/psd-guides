@@ -1,36 +1,27 @@
-//= require_tree .
-
 (function() {
+  var PSDGuides = require('psd-guides')
+    , uiControl = [].slice.call(document.querySelectorAll('.psdguides-ctrl'), 0)
+    , fixedControl = document.querySelector('.psdguides-ctrl--fixed')
+    , guides = new PSDGuides({
+      canvasWidth: 500,
+      lineColor: "#0fc",
+      horizontalGuides: ['(10, 60) * 7'],
+      verticalGuides: [37, 70, 25, 55, 20, 50, 35, 3, 40, 15, 30, 50, 55, 130, 90, 110, '(55, 110) * 2', 35, 3, 155]
+    });
 
-    var sample = {
+  uiControl.forEach(function(ctrl) {
+    ctrl.addEventListener('click', toggle, false);
+  });
 
-        init : function() {
-            this.guides;
-            this.actionBtn = document.querySelector('.js-activate-lib'),
-            this.actionBtn.addEventListener('click', this.activateGuides, false);
-        },
+  function toggle(ev) {
+    ev.preventDefault();
 
-        activateGuides : function activateGuides (event) {
-            event.preventDefault();
+    if (guides.active) {
+      fixedControl.textContent = 'Show PSDGuides.js';
+      return guides.deactivate();
+    }
 
-            sample.guides = new PSDGuides({
-                show        : true,
-                canvasWidth : 500,
-                lineColor   : "#0fc",
-                xGuides     : [10, 60],
-                yGuides     : [37, 70, 25, 55, 30, 835, 135]
-            });
-
-            sample.actionBtn.removeEventListener('click', sample.activateGuides, false);
-            sample.actionBtn.addEventListener('click', sample.toggleGuides, false);
-        },
-
-        toggleGuides : function toggleGuides (event) {
-            event.preventDefault();
-            sample.guides.toggle();
-        }
-    };
-
-    sample.init();
-
+    fixedControl.textContent = 'Hide PSDGuides.js';
+    return guides.activate();
+  }
 })();

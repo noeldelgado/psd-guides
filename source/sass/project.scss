@@ -1,1 +1,48 @@
 @import 'base';
+
+.psdguides-ctrl--fixed {
+  position: fixed;
+  right: 10px;
+  // top: 10px;
+  bottom: 10px;
+  padding: 5px 10px;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 3px;
+  color: rgb(240, 240, 240);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  z-index: 10000;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.701961);
+}
+
+/* github corner */
+.github-corner {
+  position: fixed;
+  top: 0;
+  right: 0;
+  // left: 0;
+}
+
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out
+}
+
+.github-corner > svg {
+  display: block;
+  border: 0;
+  fill: rgba(0,0,0,0.70196);
+  color: $bg-color;
+  // transform: scale(-1, 1);
+}
+
+@keyframes octocat-wave {
+  0%,100%{transform:rotate(0)}
+  20%,60%{transform:rotate(-25deg)}
+  40%,80%{transform:rotate(10deg)}
+}
+@media (max-width:500px){
+  .github-corner:hover .octo-arm{animation:none}
+  .github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}
+}
