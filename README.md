@@ -1,7 +1,7 @@
 # psd-guides
 
-[![npm-image](https://img.shields.io/npm/v/psd-guides.svg?style=flat-square)](https://www.npmjs.com/package/psd-guides)
-![bower-image](https://img.shields.io/bower/v/psd-guides.svg?style=flat-square)
+[![npm-image](https://img.shields.io/npm/v/psd-guides.svg)](https://www.npmjs.com/package/psd-guides)
+![bower-image](https://img.shields.io/bower/v/psd-guides.svg)
 
 http://noeldelgado.github.io/psd-guides/
 
@@ -13,11 +13,11 @@ Can be useful during slicing phase to accomplish pixel-perfect web layouts.
 **NPM**
 
 	npm install psd-guides --save
-	
+
 **BOWER**
 
 	bower install psd-guides --save
-	
+
 ## Usage
 ```javascript
 new PSDGuides({
