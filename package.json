@@ -3,8 +3,9 @@
   "version": "1.0.1",
   "description": "Draw photoshop-like guides",
   "main": "./PSDGuides.js",
-  "dependencies": {},
-  "devDependencies": {},
+  "files": [
+    "PSDGuides.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/noeldelgado/psd-guides.git"
