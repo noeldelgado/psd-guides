@@ -6,6 +6,10 @@
   "files": [
     "PSDGuides.js"
   ],
+  "scripts": {
+    "test": "riteway -r esm test/**/*.js | tap-nirvana",
+    "test:watch": "onchange .PSDGuides.js test/*.js -- npm test"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/noeldelgado/psd-guides.git"
