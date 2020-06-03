@@ -19,5 +19,13 @@
   "bugs": {
     "url": "https://github.com/noeldelgado/psd-guides/issues"
   },
-  "homepage": "https://github.com/noeldelgado/psd-guides"
+  "homepage": "https://github.com/noeldelgado/psd-guides",
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "jsdom": "16.2.2",
+    "jsdom-global": "3.0.2",
+    "onchange": "^7.0.2",
+    "riteway": "^6.1.2",
+    "tap-nirvana": "^1.1.0"
+  }
 }
