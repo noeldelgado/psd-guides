@@ -1,6 +1,14 @@
 # psd-guides
 
-[![npm-image](https://img.shields.io/npm/v/psd-guides.svg)](https://www.npmjs.com/package/psd-guides)
+[![NPM Version][npm-image]][npm-url]
+[![Minzipped size][bundlephobia-image]][bundlephobic-url]
+[![License][license-image]][license-url]
+![Test CI][github-actions-test-image]
+[![Known Vulnerabilities][snyk-image]][snyk-url]
+[![Dependencies][david-image]][david-url]
+[![Dev Dependencies][david-dev-image]][david-dev-url]
+[![Total alerts][lgtm-image]][lgtm-url]
+[![Language grade: JavaScript][lgtm-grade-image]][lgtm-grade-url]
 
 http://noeldelgado.github.io/psd-guides/
 
@@ -221,3 +229,21 @@ new PSDGuides({
 ```
 
 There are more examples inside the `examples` folder.
+
+[npm-image]: https://img.shields.io/npm/v/psd-guides.svg?logo=npm&label=NPM
+[npm-url]: https://www.npmjs.com/package/psd-guides
+[license-image]: https://img.shields.io/npm/l/psd-guides.svg
+[license-url]: https://github.com/noeldelgado/psd-guides/blob/master/LICENSE
+[github-actions-test-image]: https://github.com/noeldelgado/psd-guides/workflows/Test%20CI/badge.svg
+[bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/psd-guides?label=size
+[bundlephobic-url]: https://bundlephobia.com/result?p=psd-guides
+[snyk-image]: https://snyk.io/test/npm/psd-guides/badge.svg
+[snyk-url]: https://snyk.io/test/npm/psd-guides
+[david-image]: https://img.shields.io/david/noeldelgado/psd-guides.svg
+[david-url]: https://david-dm.org/noeldelgado/psd-guides
+[david-dev-image]: https://img.shields.io/david/dev/noeldelgado/psd-guides.svg
+[david-dev-url]: https://david-dm.org/noeldelgado/psd-guides?type=dev
+[lgtm-image]: https://img.shields.io/lgtm/alerts/g/noeldelgado/psd-guides.svg?logo=lgtm&logoWidth=18
+[lgtm-url]: https://lgtm.com/projects/g/noeldelgado/psd-guides/alerts/
+[lgtm-grade-image]: https://img.shields.io/lgtm/grade/javascript/g/noeldelgado/psd-guides.svg?logo=lgtm&logoWidth=18
+[lgtm-grade-url]: https://lgtm.com/projects/g/noeldelgado/psd-guides/context:javascript
