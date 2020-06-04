@@ -4,6 +4,7 @@
 [![Minzipped size][bundlephobia-image]][bundlephobic-url]
 [![License][license-image]][license-url]
 ![Test CI][github-actions-test-image]
+[![Known Vulnerabilities][snyk-image]][snyk-url]
 
 http://noeldelgado.github.io/psd-guides/
 
@@ -232,3 +233,5 @@ There are more examples inside the `examples` folder.
 [github-actions-test-image]: https://github.com/noeldelgado/psd-guides/workflows/Test%20CI/badge.svg
 [bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/psd-guides?label=size
 [bundlephobic-url]: https://bundlephobia.com/result?p=psd-guides
+[snyk-image]: https://snyk.io/test/npm/psd-guides/badge.svg
+[snyk-url]: https://snyk.io/test/npm/psd-guides
