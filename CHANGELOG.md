@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+(feature/rbwp) [#3](https://github.com/noeldelgado/psd-guides/pull/3) - 2020-06-03
+### Removed
+- bower distribution
+
 (feature/npmfiles) [#2](https://github.com/noeldelgado/psd-guides/pull/2) - 2020-06-03
 ### Fixed
 - distributed NPM files
