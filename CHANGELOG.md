@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+(feauture/li)
+### Added
+- license
+- changelog
+
 ## [1.0.1]
 ### Fix
 - commonjs support
