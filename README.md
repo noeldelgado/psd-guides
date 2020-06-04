@@ -5,6 +5,8 @@
 [![License][license-image]][license-url]
 ![Test CI][github-actions-test-image]
 [![Known Vulnerabilities][snyk-image]][snyk-url]
+[![Dependencies][david-image]][david-url]
+[![Dev Dependencies][david-dev-image]][david-dev-url]
 
 http://noeldelgado.github.io/psd-guides/
 
@@ -235,3 +237,7 @@ There are more examples inside the `examples` folder.
 [bundlephobic-url]: https://bundlephobia.com/result?p=psd-guides
 [snyk-image]: https://snyk.io/test/npm/psd-guides/badge.svg
 [snyk-url]: https://snyk.io/test/npm/psd-guides
+[david-image]: https://img.shields.io/david/noeldelgado/psd-guides.svg
+[david-url]: https://david-dm.org/noeldelgado/psd-guides
+[david-dev-image]: https://img.shields.io/david/dev/noeldelgado/psd-guides.svg
+[david-dev-url]: https://david-dm.org/noeldelgado/psd-guides?type=dev
