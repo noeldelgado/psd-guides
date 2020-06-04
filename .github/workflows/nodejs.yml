@@ -1,6 +1,6 @@
 # This workflow will do a clean install of dependecies and run tests
 
-name: Tests CI
+name: Test CI
 
 on: push
 
