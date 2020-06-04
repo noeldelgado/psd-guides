@@ -1,6 +1,7 @@
 # psd-guides
 
-[![npm-image](https://img.shields.io/npm/v/psd-guides.svg)](https://www.npmjs.com/package/psd-guides)
+[![NPM Version][npm-image]][npm-url]
+![Test CI][github-actions-test-image]
 
 http://noeldelgado.github.io/psd-guides/
 
@@ -221,3 +222,7 @@ new PSDGuides({
 ```
 
 There are more examples inside the `examples` folder.
+
+[npm-image]: https://img.shields.io/npm/v/psd-guides.svg?logo=npm&label=NPM
+[npm-url]: https://www.npmjs.com/package/psd-guides
+[github-actions-test-image]: https://github.com/noeldelgado/psd-guides/workflows/Test%20CI/badge.svg
