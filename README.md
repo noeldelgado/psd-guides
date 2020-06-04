@@ -7,6 +7,8 @@
 [![Known Vulnerabilities][snyk-image]][snyk-url]
 [![Dependencies][david-image]][david-url]
 [![Dev Dependencies][david-dev-image]][david-dev-url]
+[![Total alerts][lgtm-image]][lgtm-url]
+[![Language grade: JavaScript][lgtm-grade-image]][lgtm-grade-url]
 
 http://noeldelgado.github.io/psd-guides/
 
@@ -241,3 +243,7 @@ There are more examples inside the `examples` folder.
 [david-url]: https://david-dm.org/noeldelgado/psd-guides
 [david-dev-image]: https://img.shields.io/david/dev/noeldelgado/psd-guides.svg
 [david-dev-url]: https://david-dm.org/noeldelgado/psd-guides?type=dev
+[lgtm-image]: https://img.shields.io/lgtm/alerts/g/noeldelgado/psd-guides.svg?logo=lgtm&logoWidth=18
+[lgtm-url]: https://lgtm.com/projects/g/noeldelgado/psd-guides/alerts/
+[lgtm-grade-image]: https://img.shields.io/lgtm/grade/javascript/g/noeldelgado/psd-guides.svg?logo=lgtm&logoWidth=18
+[lgtm-grade-url]: https://lgtm.com/projects/g/noeldelgado/psd-guides/context:javascript
