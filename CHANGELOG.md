@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+(feature/t) [#4](https://github.com/noeldelgado/psd-guides/pull/4) - 2020-06-03
+### Added
+- .editorconfig [bd2c6ee](https://github.com/noeldelgado/psd-guides/commit/bd2c6eeca7141092c3aedcada29bb745e6c4bdcf)
+- tests [bc32c90](https://github.com/noeldelgado/psd-guides/commit/bc32c90e41b6b5527d629d7c72aa9828bbade25e) [ede4a6e](https://github.com/noeldelgado/psd-guides/commit/ede4a6e5c4f5d9aec517a7993d2969a817f0be46) [3cc4797](https://github.com/noeldelgado/psd-guides/commit/3cc47973472edcaa9203778cc20af5fcb0561a30)
+
 (feature/rbwp) [#3](https://github.com/noeldelgado/psd-guides/pull/3) - 2020-06-03
 ### Removed
 - bower distribution
