@@ -1,6 +1,7 @@
 # psd-guides
 
 [![NPM Version][npm-image]][npm-url]
+[![Minzipped size][bundlephobia-image]][bundlephobic-url]
 [![License][license-image]][license-url]
 ![Test CI][github-actions-test-image]
 
@@ -226,6 +227,8 @@ There are more examples inside the `examples` folder.
 
 [npm-image]: https://img.shields.io/npm/v/psd-guides.svg?logo=npm&label=NPM
 [npm-url]: https://www.npmjs.com/package/psd-guides
-[github-actions-test-image]: https://github.com/noeldelgado/psd-guides/workflows/Test%20CI/badge.svg
 [license-image]: https://img.shields.io/npm/l/psd-guides.svg
 [license-url]: https://github.com/noeldelgado/psd-guides/blob/master/LICENSE
+[github-actions-test-image]: https://github.com/noeldelgado/psd-guides/workflows/Test%20CI/badge.svg
+[bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/psd-guides?label=size
+[bundlephobic-url]: https://bundlephobia.com/result?p=psd-guides
