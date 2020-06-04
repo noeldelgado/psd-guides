@@ -4,7 +4,14 @@
 
 (feature/tb) [#5](https://github.com/noeldelgado/psd-guides/pull/5) - 2020-06-03
 ### Added
-- test-ci
+- test-ci workflow
+- badges
+  - bundlephobia
+  - license
+  - Github Action test-ci
+  - snyk
+  - david
+  - lgtm
 
 (feature/t) [#4](https://github.com/noeldelgado/psd-guides/pull/4) - 2020-06-03
 ### Added
