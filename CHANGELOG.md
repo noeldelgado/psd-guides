@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+(feature/npmfiles) [#2](https://github.com/noeldelgado/psd-guides/pull/2) - 2020-06-03
+### Fixed
+- distributed NPM files
+
 (feauture/li) [#1](https://github.com/noeldelgado/psd-guides/pull/1) - 2020-06-03
 ### Added
 - license
