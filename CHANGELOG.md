@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-(feauture/li)
+(feauture/li) [#1](https://github.com/noeldelgado/psd-guides/pull/1) - 2020-06-03
 ### Added
 - license
 - changelog
