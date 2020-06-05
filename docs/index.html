@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>psd-guides - JS library to draw photoshop like guides.</title><meta name="description" content=""><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><link href="main.148778fb.css" rel="stylesheet" media="all"></head><body> <a href="https://github.com/noeldelgado/psd-guides" rel="external" class="github-corner" title="Fork me on GitHub"> <svg width="80" height="80" viewBox="0 0 250 250"><path d="M0 0l115 115h15l12 27 108 108V0z"/><path d="M128.3 109c-14.5-9.3-9.3-19.4-9.3-19.4 3-6.9 1.5-11 1.5-11-1.3-6.6 2.9-2.3 2.9-2.3 3.9 4.6 2.1 11 2.1 11-2.6 10.3 5.1 14.6 8.9 15.9" fill="currentColor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115c-.1.1 3.7 1.5 4.8.4l13.9-13.8c3.2-2.4 6.2-3.2 8.5-3-8.4-10.6-14.7-24.2 1.6-40.6 4.7-4.6 10.2-6.8 15.9-7 .6-1.6 3.5-7.4 11.7-10.9 0 0 4.7 2.4 7.4 16.1 4.3 2.4 8.4 5.6 12.1 9.2 3.6 3.6 6.8 7.8 9.2 12.2 13.7 2.6 16.2 7.3 16.2 7.3-3.6 8.2-9.4 11.1-10.9 11.7-.3 5.8-2.4 11.2-7.1 15.9-16.4 16.4-30 10-40.6 1.6.2 2.8-1 6.8-5 10.8L141 136.5c-1.2 1.2.6 5.4.8 5.3z" fill="currentColor" class="octo-body"/></svg> </a> <div class="main-content"> <div class="wrapper"> <section class="intro"> <h1><b>psd-guides</b> is a library to draw photoshop-like guides.</h1>  <a class="button" href="https://github.com/noeldelgado/psd-guides">View on <span>Github</span></a> <pre><code>npm i psd-guides --save</code></pre> </section> <section class="usage"> <h2>Sample Usage</h2> <pre><code>import PSDGuides form 'psd-guides'</code></pre> <h3>– Custom guides example</h3> <pre><code>new PSDGuides({
+  canvasWidth: 1000,
+  horizontalGuides: [20, "355 * 2", 250, 20],
+  verticalGuides: [50, "100 * 2", "250 * 2", "50 * 3"]
+});</code></pre> <h3>– Applying 960 grid system</h3> <h4>12 column grid</h4> <pre><code>new PSDGuides({
+  canvasWidth: 960,
+  horizontalGuides: ["(10, 60, 10) * 12"]
+});</code></pre> <h4>16 column grid</h4> <pre><code>new PSDGuides({
+  canvasWidth: 960,
+  horizontalGuides: ["(10, 40, 10) * 16"]
+});</code></pre> <h4>24 column grid</h4> <pre><code>new PSDGuides({
+  canvasWidth: 960,
+  horizontalGuides : ["(10, 20, 10) * 24"]
+});</code></pre> </section> <section> <h2>Demo</h2> <p>To see it in action, <a href="#" class="psdguides-ctrl">click here</a>.</p> </section> <section class="license"> <h2>License</h2> <p>Copyright © Noel Delgado.</p> <p>Licensed under the MIT License</p> </section> </div> </div> <span class="psdguides-ctrl psdguides-ctrl--fixed">Show PSDGuides.js</span> <script src="main.b5d5a0bd.js"></script>
+</body></html>
