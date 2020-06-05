@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "name": "psd-guides-www",
+  "scripts": {
+    "prepare": "snowpack",
+    "start": "snowpack dev",
+    "build": "snowpack build",
+    "postbuild": "rm -rf ../docs/{__snowpack__,web_modules,src}"
+  },
+  "devDependencies": {
+    "@snowpack/plugin-parcel": "^1.0.0",
+    "postcss-cli": "^7.1.1",
+    "postcss-color-mod-function": "^3.0.3",
+    "postcss-custom-properties": "^9.1.1",
+    "postcss-import": "^12.0.1",
+    "postcss-nested": "^4.2.1",
+    "snowpack": "^2.2.4"
+  }
+}

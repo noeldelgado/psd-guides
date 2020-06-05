@@ -1,0 +1,7 @@
+:root {
+  --bg-color: #09c;
+  --text-color: rgba(255, 255, 255, 0.9);
+  --link-color: #fff;
+  --code-bg-color: color-mod(var(--bg-color) b(60%));
+  --code-text-color: color-mod(var(--bg-color) l(50%));
+}

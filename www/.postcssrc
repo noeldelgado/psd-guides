@@ -1,0 +1,13 @@
+{
+  "plugins": {
+    "postcss-import": {
+      "path": ["src", "node_modules"]
+    },
+    "postcss-nested": {},
+    "postcss-custom-properties": {
+      "importFrom": 'src/_vars.css'
+    },
+    "postcss-color-mod-function": {
+    }
+  }
+}
